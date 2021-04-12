@@ -11,12 +11,14 @@ export class Field {
 	area: number;
 	center: [number, number];
 	weather: Map<number, Weather | undefined> = new Map(); // key is "year"
+  numPlants: number;
 
 	constructor(name: string, geojson: Feature, area: number, center: [number, number]) {
 		this.name = name;
 		this.geojson = geojson;
 		this.area = area;
 		this.center = center;
+    this.numPlants = 0;
 
 		// Make relations non-enumerable to stop Dexie from trying to save them
 		Object.defineProperties(this, {

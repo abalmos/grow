@@ -71,9 +71,61 @@
 	};
 </script>
 
+
 <script lang="ts">
+	import BackArrow from '$lib/icons/BackArrow.svelte';
+	import NewIcon from '$lib/icons/NewIcon.svelte';
+  import Modal from '$lib/components/Modal.svelte';
+
+  import Header from '$lib/components/Header.svelte';
+
 	export let field: Field;
+
+
+	function handleBack() {
+		goto('/fields');
+	}
+
+  let showEditModal: boolean = false;
+  const toggleEditModal: () => void = () => {
+    showEditModal = !showEditModal;
+  }
+
+  const handleEditFormSubmit = () => {
+
+  }
 </script>
+
+<Header handleButtonClick={toggleEditModal} />
+
+{#if showEditModal}
+  <!-- Modal -->
+  <Modal on:click={toggleEditModal}>
+    <form on:submit={handleEditFormSubmit} class='w-full h-full flex flex-col justify-between p-8'>
+      <div class='flex flex-wrap'>
+        <label class='w-full'>
+          <span><span class="text-purdue-metallic">*</span> Variety</span>
+          <select required>
+            <option>variety 1</option>
+            <option>variety 2</option>
+            <option>variety 3</option>
+          </select>
+        </label>
+        <label class='w-full'>
+          <span><span class="text-purdue-metallic">*</span> Number of plants</span>
+          <input type="number" required/>
+        </label>
+        <label class='w-full'>
+          <span><span class="text-purdue-metallic">*</span> Planted on</span>
+          <input type="date" required/>
+        </label>
+      </div>
+      <button type='submit'>Confirm Edit</button>
+    </form>
+  </Modal>
+  <!-- end of modal -->
+{/if}
+
 
 <div class="w-full">
 	<div class="bg-white shadow-xl overflow-hidden text-left">
@@ -88,7 +140,7 @@
 				<p>
 					{Math.round(field.area)} ac.
 				</p>
-				<p>Planted: ?</p>
+				<p>Planted: {field.numPlants}</p>
 			</div>
 			<p class="text-3xl text-gray-900">{field.name || ''}</p>
 		</div>
@@ -106,8 +158,7 @@
 				</svg>
 
 				<p>
-					<span class="text-gray-900
-													font-bold">{field.weather.get(2021)?.maxTemp[0]}</span>
+					<span class="text-gray-900 font-bold">{field.weather.get(2021)?.maxTemp[0]}</span>
 					Degrees on Jan 1
 				</p>
 			</div>
