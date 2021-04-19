@@ -81,25 +81,24 @@
 
 	export let field: Field;
 
+  console.log(field);
+  
+  // let showEditModal: boolean = false;
+  // function toggleEditModal() {
+  //   showEditModal = !showEditModal;
+  // }
 
-	function handleBack() {
-		goto('/fields');
-	}
-
-  let showEditModal: boolean = false;
-  const toggleEditModal: () => void = () => {
-    showEditModal = !showEditModal;
+  function handleOpenEdit() {
+    goto('/fields/' + field.id + '/edit');
   }
+  // function handleEditFormSubmit() {
 
-  const handleEditFormSubmit = () => {
-
-  }
+  // }
 </script>
 
-<Header handleButtonClick={toggleEditModal} />
+<Header handleButtonClick={handleOpenEdit} backPath='/fields'/>
 
-{#if showEditModal}
-  <!-- Modal -->
+<!-- {#if showEditModal}
   <Modal on:click={toggleEditModal}>
     <form on:submit={handleEditFormSubmit} class='w-full h-full flex flex-col justify-between p-8'>
       <div class='flex flex-wrap'>
@@ -123,8 +122,7 @@
       <button type='submit'>Confirm Edit</button>
     </form>
   </Modal>
-  <!-- end of modal -->
-{/if}
+{/if} -->
 
 
 <div class="w-full">

@@ -2,7 +2,7 @@ import { db } from './db';
 import { nanoid } from 'nanoid/non-secure';
 
 import type { Feature } from 'geojson';
-import { Weather } from '.';
+import { Weather, Variety } from '.';
 
 export class Field {
 	id = `f_${nanoid()}`;
@@ -11,6 +11,8 @@ export class Field {
 	area: number;
 	center: [number, number];
 	weather: Map<number, Weather | undefined> = new Map(); // key is "year"
+  varietyId: string | undefined;
+  datePlanted: Date | undefined;
   numPlants: number;
 
 	constructor(name: string, geojson: Feature, area: number, center: [number, number]) {
@@ -18,7 +20,8 @@ export class Field {
 		this.geojson = geojson;
 		this.area = area;
 		this.center = center;
-    this.numPlants = 0;
+
+    this.numPlants = 0; // not needed right now 
 
 		// Make relations non-enumerable to stop Dexie from trying to save them
 		Object.defineProperties(this, {
