@@ -5,10 +5,10 @@ Install the dependencies using yarn (`yarn install`)
 Run the development service with:
 
 ```bash
-npm run dev
+yarn run dev
 
 # or start the server and open the app in a new browser tab
-npm run dev -- --open
+yarn run dev -- --open
 ```
 
 ## Default data
