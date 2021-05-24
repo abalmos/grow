@@ -21,7 +21,7 @@
 
 <script lang="ts">
   import Header from '$lib/components/Header.svelte';
-  import { goto } from '$app/navigation';
+  import SelectVariety from '$lib/components/SelectVariety.svelte';
 
   
   export let varieties: Variety[];
@@ -33,6 +33,10 @@
   
   // export let varieties: Variety;
   
+  let varietyValue = '';
+  function updateVarietyField(variety: Variety) {
+    varietyValue = variety.product;
+  }
 
   function handleEditFormSubmit(event: FormEventHandler<HTMLFormElement>) {
     event.preventDefault();
@@ -64,16 +68,19 @@
 <Header backPath={'fields/' + field.id} showButton={false} />
 
 <form on:submit={handleEditFormSubmit} class='w-5/6 mx-auto h-full flex flex-col justify-between p-8'>
-  <div class='flex flex-wrap'>
+  <div class='flex flex-wrap mb-14'>
     <label class='w-full'>
-      <span><span class="text-purdue-metallic">*</span> Variety</span>
+      <span><span class="text-purdue-metallic">*</span> Planted on</span>
+      <input id='date' type="date" required />
+    </label>
+
+    <!-- <label class='w-full'>
+      <span><span class="text-purdue-metallic">*</span> Variety</span> -->
 
       <!-- TODO: custom select to display more info about varieties -->
-      <select id='variety' required>
-        <!-- pre-fills defaults values (still working default value for time) -->
+      <!-- <select id='variety' required>
+        pre-fills defaults values (still working default value for time)
         {#each varieties as variety}
-          {console.log(variety.id, field.varietyId, field.varietyId === variety.id)}
-
           {#if field.varietyId && variety.id === field.varietyId}
             <option value={variety.id} selected>{variety.product}</option>
           {:else}
@@ -81,15 +88,17 @@
           {/if}
         {/each}
       </select>
-    </label>
-    <!-- <label class='w-full'>
-      <span> Number of plants</span>
-      <input type="number" />
     </label> -->
+
     <label class='w-full'>
-      <span><span class="text-purdue-metallic">*</span> Planted on</span>
-      <input id='date' type="date" required />
+      <span><span class="text-purdue-metallic">*</span>Selected Variety</span>
+      <input id='variety' type="text" value={varietyValue} disabled />
     </label>
+
+    <div class='w-full h-1/2 mt-3'>
+      <SelectVariety handleOnClick={updateVarietyField}/>
+    </div>
+
     <button class='mt-4' type='submit'>Confirm Edit</button>
   </div>
 </form>
