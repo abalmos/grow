@@ -71,6 +71,10 @@ export class Variety {
 			})
 			.toArray();
 	}
+
+  static getAllProducts(): Promise<Variety[]> {
+    return db.varieties.toArray();
+  }
 }
 
 db.varieties.mapToClass(Variety);
