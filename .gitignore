@@ -1,7 +1,8 @@
 .DS_Store
 node_modules
-/.svelte
 /build
+/.svelte-kit
+/package
 /functions
 target
 yarn-error.log

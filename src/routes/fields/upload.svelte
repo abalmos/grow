@@ -93,10 +93,10 @@
 			{/each}
 		</div>
 
-		<label>
-			<button type="submit" on:click={handleSubmit}
-				>Import {fields.filter((f) => f.checked).length} Fields</button
-			>
+		<label class="submit">
+			<button type="submit" on:click={handleSubmit}>
+				Import {fields.filter((f) => f.checked).length} Fields
+			</button>
 		</label>
 	{/if}
 </div>
@@ -104,5 +104,9 @@
 <style type="postcss">
 	label.floating input {
 		@apply absolute w-full h-full opacity-0 inset-0;
+	}
+
+	label.submit {
+		@apply mb-20;
 	}
 </style>

@@ -31,6 +31,7 @@
 			<p class="text-3xl text-gray-900">{field.name || ''}</p>
 		</div>
 
+		<!--
 		<div class="flex p-4 border-t border-gray-300 text-gray-700">
 			<div class="flex-1 inline-flex items-center">
 				<svg
@@ -75,5 +76,6 @@
 				</div>
 			</div>
 		</div>
+		-->
 	</div>
 </div>

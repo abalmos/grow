@@ -1,74 +1,75 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @layer base {
-	html {
-		-webkit-tap-highlight-color: transparent !important;
-	}
+  html {
+    @apply font-body;
+    -webkit-tap-highlight-color: transparent !important;
+  }
 
-	label {
-		@apply mt-2 block;
+  label {
+    @apply mt-2 block;
 
-		& span {
-			@apply text-purdue-black;
-		}
+    & span {
+      @apply text-purdue-black;
+    }
 
-		& input[type='text'],
-		& input[type='password'],
-		& input[type='email'],
-		& input[type='number'],
-		& input[type='url'],
-		& input[type='date'],
-		& input[type='datetime-local'],
-		& input[type='month'],
-		& input[type='week'],
-		& input[type='time'],
-		& input[type='search'],
-		& input[type='tel'],
-		& input[type='checkbox'],
-		& input[type='radio'],
-		& input[type='file'],
-		& select,
-		& select[multiple],
-		& textarea {
-			@apply w-full rounded bg-gray-100 border border-gray-200
+    & input[type='text'],
+    & input[type='password'],
+    & input[type='email'],
+    & input[type='number'],
+    & input[type='url'],
+    & input[type='date'],
+    & input[type='datetime-local'],
+    & input[type='month'],
+    & input[type='week'],
+    & input[type='time'],
+    & input[type='search'],
+    & input[type='tel'],
+    & input[type='checkbox'],
+    & input[type='radio'],
+    & input[type='file'],
+    & select,
+    & select[multiple],
+    & textarea {
+      @apply w-full rounded bg-gray-100 border border-gray-200
 		       	 focus:border-gray-200 focus:bg-gray-200 focus:ring-0 shadow-sm
 						 placeholder-gray-500;
-		}
-	}
+    }
+  }
 
-	button {
-		@apply w-full inline-flex justify-center rounded-md border
+  button {
+    @apply w-full inline-flex justify-center rounded-md border
 					 border-transparent shadow-sm px-4 py-2 bg-purdue-gold text-base
 					 font-medium text-gray-600 hover:bg-purdue-metallic
 					 focus:outline-none focus:ring-0;
-	}
+  }
 
-	::file-selector-button {
-			@apply rounded bg-gray-200 border-0 focus:border-gray-200
+  header {
+    @apply font-display tracking-tighter text-sm;
+  }
+
+  ::file-selector-button {
+    @apply rounded bg-gray-200 border-0 focus:border-gray-200
 			border border-transparent focus:bg-gray-200 focus:ring-0
 			outline-none focus:outline-none px-4 py-2;
-	}
+  }
 
-	::-webkit-file-upload-button {
-			@apply rounded bg-gray-200 border-0 focus:border-gray-200
+  ::-webkit-file-upload-button {
+    @apply rounded bg-gray-200 border-0 focus:border-gray-200
 			border border-transparent focus:bg-gray-200 focus:ring-0
 			outline-none focus:outline-none px-4 py-2;
-	}
+  }
 
-	h1 {
-		@apply font-light text-xl tracking-wide pt-6;
-	}
+  h1 {
+    @apply font-display text-xl tracking-wide pt-6; 
+  }
 }
 
 @layer utilities {
-	.pb-safe {
-		padding-bottom: env(safe-area-inset-bottom);
-	}
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 
-	.card-grid {
-		@apply grid justify-center grid-cols-1 sm:grid-cols-2 md:grid-cols-3
+  .card-grid {
+    @apply grid justify-center grid-cols-1 sm:grid-cols-2 md:grid-cols-3
 					 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6;
-	}
+  }
 }
