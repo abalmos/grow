@@ -1,7 +1,7 @@
 <script context="module" lang="ts">
 	import { goto } from '$app/navigation';
 	import { Field } from '$lib/db';
-	import { Weather } from '$lib/db'; 
+	//import { Weather } from '$lib/db'; 
 	import Leaflet from '$lib/leaflet/Leaflet.svelte';
 	import GeoJson from '$lib/leaflet/GeoJson.svelte';
 
@@ -9,8 +9,8 @@
 
 	import type { Load } from '@sveltejs/kit';
 
-	export const load: Load = async ({ page, fetch }) => {
-		const id = page.params.id;
+	export const load: Load = async ({ page /*, fetch */}) => {
+		const id = page.params['id'] || "";
 		const field = await Field.get(id);
 
 		if (!field) {
@@ -19,6 +19,7 @@
 
 		await field.loadWeather();
 
+/*
 		///// THIS BLOCK OF CODE SUCKS AND IS KINDA SLOW ...
 		///// YOU MAY WANT TO COMMENT THIS WHOLE BLOCK AFTER LOADING IN SOME WEATHER
 		///// DATA INTO INDEXEDDB
@@ -60,6 +61,7 @@
 			await thisYear.save();
 			field.weather.set(2021, thisYear);
 		}
+  */
 
 		///// END CODE THAT SHOULDN'T BE HERE
 
@@ -76,22 +78,15 @@
   import Graph from '$lib/components/Graph.svelte';
 
   import Header from '$lib/components/Header.svelte';
+import FieldCard from '$lib/FieldCard.svelte';
 
 	export let field: Field;
 
   console.log(field);
-  
-  // let showEditModal: boolean = false;
-  // function toggleEditModal() {
-  //   showEditModal = !showEditModal;
-  // }
 
   function handleOpenEdit() {
     goto('/fields/' + field.id + '/edit');
   }
-  // function handleEditFormSubmit() {
-
-  // }
 </script>
 
 <Header handleButtonClick={handleOpenEdit} backPath='/fields'/>
@@ -124,6 +119,7 @@
 
 
 <div class="w-full">
+ <!--
 	<div class="bg-white shadow-xl overflow-hidden text-left">
 		<div class="bg-cover bg-center">
 			<Leaflet class="h-56" zoomControl={false} dragable={false} zoomable={false}>
@@ -136,7 +132,8 @@
 				<p>
 					{Math.round(field.area)} ac.
 				</p>
-				<p>Planted: {field.numPlants}</p>
+        <p>{field.varietyId}</p>
+				<p>Planted on {dayjs(field.datePlanted).format('YYYY-MM-DD')}</p>
 			</div>
 			<p class="text-3xl text-gray-900">{field.name || ''}</p>
 		</div>
@@ -159,6 +156,9 @@
 			</div>
 		</div>
 	</div>
+  -->
+
+  <FieldCard {field} />
 
   <div class="mb-16 p-4">
     <Graph weather={field.weather} />

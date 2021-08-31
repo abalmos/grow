@@ -21,8 +21,11 @@
 	}
 </script>
 
+<header class="sticky top-0 bg-purdue-gray shadow z-500">
+  <h1 class="p-3 text-white font-semibold">Varieties</h1>
+</header>
+
 <div class="w-full">
-	<h1>Varieties</h1>
 	<div class="bg-white px-3 py-2 mb-4">
 		<label class="flex items-center rounded bg-gray-100">
 			<div class="px-2">

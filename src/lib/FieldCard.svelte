@@ -1,37 +1,140 @@
 <script type="ts">
-	import { goto } from '$app/navigation';
-	import Leaflet from '$lib/leaflet/Leaflet.svelte';
-	import GeoJson from '$lib/leaflet/GeoJson.svelte';
-	import type { Field } from '$lib/db';
+  import { format, differenceInDays, getDayOfYear, getYear } from 'date-fns';
+  import { goto } from '$app/navigation';
+  import Leaflet from '$lib/leaflet/Leaflet.svelte';
+  import GeoJson from '$lib/leaflet/GeoJson.svelte';
+  import type { Field } from '$lib/db';
 
-	export let field: Field;
+  export let field: Field;
+
+  async function computeGDU(field: Field, year: number): Promise<number> {
+    if (!field.datePlanted) {
+      return 0;
+    }
+    let start = getDayOfYear(field.datePlanted);
+    let end = getDayOfYear(new Date());
+
+    await field.loadWeather();
+    let w = field.weather.get(year);
+
+    let gdu = 0;
+    for (let d = start; d <= w?.maxTemp.length && d <= end; d++) {
+      if (w?.minTemp[d] === -999 || w?.maxTemp[d] === -999) {
+        continue;
+      }
+      let minT = Math.max(w?.minTemp[d] || 0, 50);
+      let maxT = Math.min(Math.max(w?.maxTemp[d] || 0, 50), 86);
+
+      gdu += (maxT + minT) / 2 - 50;
+    }
+
+    return Math.floor(gdu);
+  }
+
+  async function computeAvgGDU(field: Field): Promise<number> {
+    await field.loadWeather();
+
+    let gdus = [];
+    for (const year of field.weather.keys()) {
+      gdus.push(await computeGDU(field, year));
+    }
+
+    return gdus.reduce((a: number, b: number) => a + b) / gdus.length;
+  }
+
+  async function computeRain(field: Field, year: number): Promise<number> {
+    if (!field.datePlanted) {
+      return 0;
+    }
+    let start = getDayOfYear(field.datePlanted);
+    let end = getDayOfYear(new Date());
+
+    await field.loadWeather();
+    let w = field.weather.get(year);
+
+    let precip = 0;
+    for (let d = start; d <= w?.precipitation.length && d <= end; d++) {
+      if (w?.precipitation[d] === -999) {
+        continue;
+      }
+      precip += w?.precipitation[d] || 0;
+    }
+
+    return precip;
+  }
+
+  async function computeAvgRain(field: Field): Promise<number> {
+    await field.loadWeather();
+
+    let rain = [];
+    for (const year of field.weather.keys()) {
+      rain.push(await computeRain(field, year));
+    }
+
+    return rain.reduce((a: number, b: number) => a + b) / rain.length;
+  }
 </script>
 
 <div class="w-full">
-	<div class="bg-white shadow-xl rounded-lg overflow-hidden text-left">
-		<!-- TODO: this on:click really just needs to dispatch out of this component
+  <div class="bg-white border-b rounded-lg overflow-hidden text-left">
+    <!-- TODO: this on:click really just needs to dispatch out of this component
 			so that we can handle the routing in the parent. For example, this breaks
 			the field uploading as is -->
-		<div
-			class="bg-cover bg-center"
-			on:click={() => goto(`/fields/${encodeURIComponent(field.id)}`)}
-		>
-			<Leaflet class="h-56" zoomControl={false} dragable={false} zoomable={false}>
-				<GeoJson geojson={field.geojson} zoomTo={true} />
-			</Leaflet>
-		</div>
+    <div
+      class="bg-cover bg-center"
+      on:click={() => goto(`/fields/${encodeURIComponent(field.id)}`)}
+    >
+      <Leaflet
+        class="h-56"
+        zoomControl={false}
+        dragable={false}
+        zoomable={false}
+      >
+        <GeoJson geojson={field.geojson} zoomTo={true} />
+      </Leaflet>
+    </div>
 
-		<div class="p-4">
-			<div class="flex justify-between tracking-wide text-sm text-gray-700">
-				<p>
-					{Math.round(field.area)} ac.
-				</p>
-				<p>Planted: ?</p>
-			</div>
-			<p class="text-3xl text-gray-900">{field.name || ''}</p>
-		</div>
+    <div class="p-4">
+      <div class="flex justify-between">
+        <div class="flex-col text-left">
+          <p class="text-3xl text-gray-900">{field.name || ''}</p>
+          <p>{Math.round(field.area)} ac.</p>
+          <p>
+            {#await computeGDU(field, getYear(new Date())) then gdu}
+              GDD: {gdu}
+              {#await computeAvgGDU(field) then avgGdu}
+                ({gdu > avgGdu
+                  ? `${Math.floor(gdu - avgGdu)} ahead`
+                  : `${Math.floor(avgGdu - gdu)} behind`})
+              {/await}
+            {/await}
+          </p>
+          <p>
+            {#await computeRain(field, getYear(new Date())) then rain}
+              Rain: {rain.toFixed()} in.
+              {#await computeAvgRain(field) then avgRain}
+                ({rain > avgRain
+                  ? `${(rain - avgRain).toFixed(1)} in. ahead`
+                  : `${(avgRain - rain).toFixed(1)} in. behind`})
+              {/await}
+            {/await}
+          </p>
+        </div>
+        <div class="flex-col text-right">
+          <p>{field.varietyId || ''}</p>
+          <p class="text-lg">
+            {field.datePlanted ? format(field.datePlanted, 'yyyy-MM-dd') : ''}
+          </p>
+          <p class="text-xs">
+            {field.datePlanted
+              ? `${differenceInDays(new Date(), field.datePlanted)} days ago`
+              : ''}
+          </p>
+        </div>
+      </div>
+    </div>
 
-		<!--
+    <!--
 		<div class="flex p-4 border-t border-gray-300 text-gray-700">
 			<div class="flex-1 inline-flex items-center">
 				<svg
@@ -77,5 +180,5 @@
 			</div>
 		</div>
 		-->
-	</div>
+  </div>
 </div>

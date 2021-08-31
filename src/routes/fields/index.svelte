@@ -1,19 +1,19 @@
 <script context="module" lang="ts">
-	import { Field } from '$lib/db';
-	import FieldCard from '$lib/FieldCard.svelte';
+  import { Field } from '$lib/db';
+  import FieldCard from '$lib/FieldCard.svelte';
 </script>
 
-<h1>Fields</h1>
+<header class="sticky top-0 bg-purdue-gray shadow z-500">
+  <h1 class="p-3 text-white font-semibold">Fields</h1>
+</header>
 
 <!-- TODO: Find the pattern we like best .... -->
 {#await Field.getAll()}
-	<!-- This is a crappy screen. The data is local, this will _always_ just flash
-		quickly -->
-	<p>Loading ...</p>
+  <!-- Fetching from IndexedDB -->
 {:then fields}
-	<div class="m-2 card-grid">
-		{#each fields as field (field.id)}
-			<FieldCard {field} />
-		{/each}
-	</div>
+  <div class="m-2 card-grid">
+    {#each fields as field (field.id)}
+      <FieldCard {field} />
+    {/each}
+  </div>
 {/await}
