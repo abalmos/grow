@@ -1,51 +1,58 @@
+import {db} from '$lib/db';
 import Dexie from 'dexie';
-import { db } from './db';
-import { nanoid } from 'nanoid/non-secure';
+import {nanoid} from 'nanoid/non-secure';
+
+import type {Coordinate, Year} from '.';
 
 export class Weather {
-	id = `w_${nanoid()}`;
-	fieldId: string;
-	year: number;
-	maxTemp: Array<number>; // indexed by day of year
-	minTemp: Array<number>; // indexed by day of year
-	precipitation: Array<number>; // indexed by day of year
+  id = `w_${nanoid()}`;
+  coord: Coordinate;
+  year: Year;
+  maxTemp: Array<number>;       // indexed by day of year
+  minTemp: Array<number>;       // indexed by day of year
+  precipitation: Array<number>; // indexed by day of year
 
-	constructor(
-		fieldId: string,
-		year: number,
-		maxTemp: Array<number> = [],
-		minTemp: Array<number> = [],
-		precipitation: Array<number> = []
-	) {
-		this.fieldId = fieldId;
-		this.year = year;
-		this.maxTemp = maxTemp;
-		this.minTemp = minTemp;
-		this.precipitation = precipitation;
-	}
+  constructor(coord: Coordinate, year: Year, maxTemp: Array<number> = [],
+              minTemp: Array<number> = [], precipitation: Array<number> = []) {
+    this.coord = coord;
+    this.year = year;
+    this.maxTemp = maxTemp;
+    this.minTemp = minTemp;
+    this.precipitation = precipitation;
+  }
 
-	save(): Promise<string> {
-		// TODO: We should throw something better. Maybe our own error types?
-		if (!this.fieldId) {
-			throw 'fieldId is required';
-		}
+  save(): Promise<Coordinate> {
+    // TODO: We should throw something better. Maybe our own error types?
+    if (!this.coord) {
+      throw 'coord is required';
+    }
 
-		if (!this.year) {
-			throw 'year is required';
-		}
+    if (!this.year) {
+      throw 'year is required';
+    }
 
-		return db.weather.put(this);
-	}
+    return db.weather5.put(this);
+  }
 
-	static async getByField(fieldId: string): Promise<Map<number, Weather>> {
-		const weather: Map<number, Weather> = new Map();
-		await db.weather
-			.where('[fieldId+year]')
-			.between([fieldId, Dexie.minKey], [fieldId, Dexie.maxKey])
-			.each((w) => weather.set(w.year, w));
+  static async get(coord: Coordinate, year: Year): Promise<Weather> {
+    let w = await db.weather5.get({coord, year});
 
-		return weather;
-	}
+    if (!w) {
+      w = new Weather(coord, year);
+    }
+
+    return w;
+  }
+
+  static async getAll(coord: Coordinate): Promise<Map<Year, Weather>> {
+    const weather = new Map<Year, Weather>();
+
+    await db.weather5.where('[coord+year]')
+        .between([ coord, Dexie.minKey ], [ coord, Dexie.maxKey ])
+        .each((w) => weather.set(w.year, w));
+
+    return weather;
+  }
 }
 
-db.weather.mapToClass(Weather);
+db.weather5.mapToClass(Weather);

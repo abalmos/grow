@@ -5,7 +5,8 @@
 	import type { Load } from '@sveltejs/kit';
 
 	export const load: Load = async ({ page }) => {
-		let variety = (await Variety.get(page.params.id)) || Variety.default();
+    // TODO: Convert this so `.get()` returns the default for undefined id?
+		let variety = (await Variety.get(page.params['id'] || "")) || Variety.default();
 
 		// Take product hint
 		variety.product = page.query.get('product') || variety.product;

@@ -1,77 +1,82 @@
+<script context="module" lang="ts">
+//////////////////////////
+//// MAYBE Weather SHOULD BE A SINGLE DATA OBEJCT THAT INCLDUES ALL WEATHER FOR ONE SPOT?? A FIELD THEN CAN JUST QUERY FOR WEATHER SOMEWHERE?
+///////////////////////
+</script>
+
 <script type="ts">
-  import { format, differenceInDays, getDayOfYear, getYear } from 'date-fns';
+  import { format, differenceInDays, getDayOfYear } from 'date-fns';
   import { goto } from '$app/navigation';
   import Leaflet from '$lib/leaflet/Leaflet.svelte';
   import GeoJson from '$lib/leaflet/GeoJson.svelte';
   import type { Field } from '$lib/db';
 
+  import { weatherStore, cornGDD } from '$lib/utils/gdd';
+
+  import { weatherWorker } from '../worker';
+
   export let field: Field;
 
-  async function computeGDU(field: Field, year: number): Promise<number> {
-    if (!field.datePlanted) {
-      return 0;
+  // Request weather for this field ...
+  // TODO: Figure out the really call semantics
+  weatherWorker.postMessage({ coord: field.center, years: [2021, 2020, 2019, 2018, 2017]});
+
+  /* Parameters of the weather computations */
+  const now = new Date();
+  const year = now.getFullYear();
+  const todayDoY = getDayOfYear(now);
+  const plantDoY = getDayOfYear(field.datePlanted || now);
+
+  // TODO: weather = weatherStore(field.weather.get(2021))?
+  const weather = weatherStore(field.center);
+  console.log(weather);
+
+  let gdu = 0;
+  $: {
+    console.log($weather);
+    const w = $weather.get(year);
+    if (w) {
+      console.log(w);
+      gdu = cornGDD(w)
+        .slice(plantDoY)
+        .reduce((a, b) => a + b, 0);
     }
-    let start = getDayOfYear(field.datePlanted);
-    let end = getDayOfYear(new Date());
-
-    await field.loadWeather();
-    let w = field.weather.get(year);
-
-    let gdu = 0;
-    for (let d = start; d <= w?.maxTemp.length && d <= end; d++) {
-      if (w?.minTemp[d] === -999 || w?.maxTemp[d] === -999) {
-        continue;
-      }
-      let minT = Math.max(w?.minTemp[d] || 0, 50);
-      let maxT = Math.min(Math.max(w?.maxTemp[d] || 0, 50), 86);
-
-      gdu += (maxT + minT) / 2 - 50;
-    }
-
-    return Math.floor(gdu);
   }
 
-  async function computeAvgGDU(field: Field): Promise<number> {
-    await field.loadWeather();
-
-    let gdus = [];
-    for (const year of field.weather.keys()) {
-      gdus.push(await computeGDU(field, year));
-    }
-
-    return gdus.reduce((a: number, b: number) => a + b) / gdus.length;
+  let avgGdu = 0;
+  $: {
+    // TODO: We are showing GDU acculmation as of the last weather downloaded compared to the average up to today.
+    //       For example: Weather downloaded 5 days ago includs only up to 5 days ago, but last years weather as the entire year
+    const gduAverages = [...$weather.values()].map((w) =>
+      cornGDD(w)
+        .slice(plantDoY, todayDoY + 1)
+        .reduce((a, b) => a + b, 0)
+    );
+    avgGdu = gduAverages.reduce((a, b) => a + b, 0) / gduAverages.length;
   }
 
-  async function computeRain(field: Field, year: number): Promise<number> {
-    if (!field.datePlanted) {
-      return 0;
+  let rain = 0;
+  $: {
+    let thisYear = $weather.get(year);
+    if (thisYear) {
+      rain = thisYear.precipitation
+        .slice(plantDoY)
+        .filter((a) => a !== -999)
+        .reduce((a, b) => a + b, 0); 
     }
-    let start = getDayOfYear(field.datePlanted);
-    let end = getDayOfYear(new Date());
-
-    await field.loadWeather();
-    let w = field.weather.get(year);
-
-    let precip = 0;
-    for (let d = start; d <= w?.precipitation.length && d <= end; d++) {
-      if (w?.precipitation[d] === -999) {
-        continue;
-      }
-      precip += w?.precipitation[d] || 0;
-    }
-
-    return precip;
   }
 
-  async function computeAvgRain(field: Field): Promise<number> {
-    await field.loadWeather();
-
-    let rain = [];
-    for (const year of field.weather.keys()) {
-      rain.push(await computeRain(field, year));
-    }
-
-    return rain.reduce((a: number, b: number) => a + b) / rain.length;
+  let avgRain = 0;
+  $: {
+    // TODO: We are showing GDU acculmation as of the last weather downloaded compared to the average up to today.
+    //       For example: Weather downloaded 5 days ago includs only up to 5 days ago, but last years weather as the entire year
+    const rainAverages = [...$weather.values()].map((w) =>
+      w.precipitation
+        .slice(plantDoY, todayDoY + 1)
+        .filter((a) => a !== -999)
+        .reduce((a, b) => a + b, 0)
+    );
+    avgRain = rainAverages.reduce((a, b) => a + b, 0) / rainAverages.length;
   }
 </script>
 
@@ -100,24 +105,16 @@
           <p class="text-3xl text-gray-900">{field.name || ''}</p>
           <p>{Math.round(field.area)} ac.</p>
           <p>
-            {#await computeGDU(field, getYear(new Date())) then gdu}
-              GDD: {gdu}
-              {#await computeAvgGDU(field) then avgGdu}
-                ({gdu > avgGdu
-                  ? `${Math.floor(gdu - avgGdu)} ahead`
-                  : `${Math.floor(avgGdu - gdu)} behind`})
-              {/await}
-            {/await}
+            <!-- TODO: Render the defaults better (right now flashes NaN -> actual number) -->
+            GDD: {gdu}
+            ({gdu > avgGdu
+              ? `${Math.floor(gdu - avgGdu)} ahead`
+              : `${Math.floor(avgGdu - gdu)} behind`})
           </p>
           <p>
-            {#await computeRain(field, getYear(new Date())) then rain}
-              Rain: {rain.toFixed()} in.
-              {#await computeAvgRain(field) then avgRain}
-                ({rain > avgRain
-                  ? `${(rain - avgRain).toFixed(1)} in. ahead`
-                  : `${(avgRain - rain).toFixed(1)} in. behind`})
-              {/await}
-            {/await}
+            Rain: {rain.toFixed(1)} in. ({rain > avgRain
+              ? `${(rain - avgRain).toFixed(1)} in. ahead`
+              : `${(avgRain - rain).toFixed(1)} in. behind`})
           </p>
         </div>
         <div class="flex-col text-right">

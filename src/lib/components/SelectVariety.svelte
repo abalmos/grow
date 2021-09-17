@@ -19,7 +19,7 @@
 	}
 
 	function handleCreateVariety() {
-		goto(`varieties/new/edit?product=${encodeURIComponent(search)}`);
+		goto(`/varieties/new/edit?product=${encodeURIComponent(search)}`);
 	}
 </script>
 

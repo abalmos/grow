@@ -37,13 +37,12 @@
   </nav>
 </div>
 
-<style lang="windicss">
+<style>
   .nav-bar {
     @apply w-full h-full;
 
     & nav {
-      @apply block fixed inset-x-0 bottom-0 z-10 bg-white shadow  ring-1
-				ring-black ring-opacity-5 flex justify-between;
+      @apply block fixed inset-x-0 bottom-0 z-10 bg-white shadow  ring-1 ring-black ring-opacity-5 flex justify-between;
 
       z-index: 500;
 
@@ -53,4 +52,3 @@
     }
   }
 </style>
-

@@ -4,7 +4,7 @@
 
   let canvas: HTMLCanvasElement;
   onMount(() => {
-    const ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d");
     const chart = new Chart(ctx, {
       data: {
         labels: ["January", "February", "March", "April", "May", "June", "July"],
@@ -28,10 +28,6 @@
       options: {}
       });
   });
-
-
-  export let weather: Map<number, Weather | undefined> = new Map();
-  console.log(weather);
 </script>
 
 <div>
