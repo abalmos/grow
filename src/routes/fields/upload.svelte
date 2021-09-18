@@ -71,10 +71,7 @@
     </label>
   {:else}
     <h1>One more step</h1>
-    <p>
-      Shapefiles are great, but do require a bit of human interpretation. Can
-      you tell me which column is the field name?
-    </p>
+    <p>I need a little help. Can you tell me which is the field name?</p>
     <label>
       <span>Field name</span>
       <select bind:value={fieldNameKey}>

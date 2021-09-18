@@ -8,23 +8,24 @@
   import { cornGDD } from '$lib/utils/gdd';
   import { weatherStore } from '$lib/stores/weather';
 
-  export let field:   Field;
+  export let field: Field;
 
-  // Parameters of the weather computations 
+  // Parameters of the weather computations
   const now = new Date();
   const year = now.getFullYear();
   const todayDoY = getDayOfYear(now);
   const plantDoY = getDayOfYear(field.datePlanted || now);
+  
+  // Years to base weather insights from
+  const years = Array.from(new Array(6), (_, i) => year - i);
 
-  const weather = weatherStore(field.center, [2021, 2020, 2019, 2018, 2017]);
-  console.log(weather);
+  const weather = weatherStore(field.center, years);
 
+  // TODO: Move most of this into a util???
   let gdu = 0;
   $: {
-    console.log($weather);
     const w = $weather.get(year);
     if (w) {
-      console.log(w);
       gdu = cornGDD(w)
         .slice(plantDoY)
         .reduce((a, b) => a + b, 0);
@@ -50,7 +51,7 @@
       rain = thisYear.precipitation
         .slice(plantDoY)
         .filter((a) => a !== -999)
-        .reduce((a, b) => a + b, 0); 
+        .reduce((a, b) => a + b, 0);
     }
   }
 
