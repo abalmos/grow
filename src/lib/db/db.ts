@@ -1,11 +1,11 @@
 import Dexie from 'dexie';
 
-import type { Field, Variety, Weather, } from '.';
+import type { Field, Variety, Weather } from '.';
 
 export class GrowDB extends Dexie {
   fields: Dexie.Table<Field, string>;
   varieties: Dexie.Table<Variety, string>;
-  weather5: Dexie.Table<Weather, [number, number]>;
+  weather: Dexie.Table<Weather, [number, number]>;
 
   constructor() {
     super('GrowDB'); //, idb);
@@ -13,14 +13,13 @@ export class GrowDB extends Dexie {
     this.version(5).stores({
       varieties: '&id, brand, product',
       fields: '&id',
-      weather: '[fieldId+year]',
-      weather5: '&[coord+year]'
+      weather: '&[coord+year]'
     });
 
     // Give TS a hint
     this.varieties = this.table('varieties');
     this.fields = this.table('fields');
-    this.weather5 = this.table('weather5');
+    this.weather = this.table('weather');
   }
 }
 
