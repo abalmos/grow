@@ -1,9 +1,3 @@
-<script context="module" lang="ts">
-//////////////////////////
-//// MAYBE Weather SHOULD BE A SINGLE DATA OBEJCT THAT INCLDUES ALL WEATHER FOR ONE SPOT?? A FIELD THEN CAN JUST QUERY FOR WEATHER SOMEWHERE?
-///////////////////////
-</script>
-
 <script type="ts">
   import { format, differenceInDays, getDayOfYear } from 'date-fns';
   import { goto } from '$app/navigation';
@@ -11,24 +5,18 @@
   import GeoJson from '$lib/leaflet/GeoJson.svelte';
   import type { Field } from '$lib/db';
 
-  import { weatherStore, cornGDD } from '$lib/utils/gdd';
+  import { cornGDD } from '$lib/utils/gdd';
+  import { weatherStore } from '$lib/stores/weather';
 
-  import { weatherWorker } from '../worker';
+  export let field:   Field;
 
-  export let field: Field;
-
-  // Request weather for this field ...
-  // TODO: Figure out the really call semantics
-  weatherWorker.postMessage({ coord: field.center, years: [2021, 2020, 2019, 2018, 2017]});
-
-  /* Parameters of the weather computations */
+  // Parameters of the weather computations 
   const now = new Date();
   const year = now.getFullYear();
   const todayDoY = getDayOfYear(now);
   const plantDoY = getDayOfYear(field.datePlanted || now);
 
-  // TODO: weather = weatherStore(field.weather.get(2021))?
-  const weather = weatherStore(field.center);
+  const weather = weatherStore(field.center, [2021, 2020, 2019, 2018, 2017]);
   console.log(weather);
 
   let gdu = 0;

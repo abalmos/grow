@@ -5,7 +5,7 @@
   let canvas: HTMLCanvasElement;
   onMount(() => {
     const ctx = canvas.getContext("2d");
-    const chart = new Chart(ctx, {
+    /*const chart = */new Chart(ctx, {
       data: {
         labels: ["January", "February", "March", "April", "May", "June", "July"],
         datasets: [

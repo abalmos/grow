@@ -4,20 +4,21 @@ import { getDayOfYear, format, parse } from 'date-fns';
 export type FetchWeather = {
   coord: [number, number];
   years: number[];
-}
+};
 
-// TODO: This is likely broken ??
-onmessage = async function (e) {
-  let r: FetchWeather = e.data;
+onmessage = async function (e: MessageEvent<FetchWeather>) {
+  let request = e.data;
 
   const today = new Date();
 
-  for (const year of r.years) {
-    let thisYear = await Weather.get(r.coord, year);
+  for (const year of request.years) {
+    let thisYear = await Weather.get(request.coord, year);
 
     // TODO: Only fetch this year's data IF its after the update time AND we haven't already got it today
     if (thisYear.maxTemp.length && thisYear.year !== today.getFullYear()) {
-      console.info(`Already have ${today.getFullYear()} weather for (${r.coord[0]}, ${r.coord[1]})`)
+      console.info(
+        `Already have ${year} weather for (${request.coord[0]}, ${request.coord[1]})`
+      );
       continue;
     }
 
@@ -33,7 +34,7 @@ onmessage = async function (e) {
             ? format(today, 'yyyy-MM-dd')
             : `${year}-12-31`,
         grid: '21',
-        loc: `${r.coord[0]}, ${r.coord[1]}`,
+        loc: `${request.coord[0]}, ${request.coord[1]}`,
         elems: [
           { name: 'maxt', units: 'degreeF' },
           { name: 'mint', units: 'degreeF' },
