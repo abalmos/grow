@@ -15,7 +15,7 @@
   const year = now.getFullYear();
   const todayDoY = getDayOfYear(now);
   const plantDoY = getDayOfYear(field.datePlanted || now);
-  
+
   // Years to base weather insights from
   const years = Array.from(new Array(6), (_, i) => year - i);
 

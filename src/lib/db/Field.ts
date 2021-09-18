@@ -1,8 +1,8 @@
-import {nanoid} from 'nanoid/non-secure';
+import { nanoid } from 'nanoid/non-secure';
 
-import {db} from './db';
+import { db } from './db';
 
-import type {Feature} from 'geojson';
+import type { Feature } from 'geojson';
 
 import type { Coordinate } from '.';
 
@@ -12,12 +12,16 @@ export class Field {
   geojson: Feature;
   area: number;
   center: Coordinate;
-  varietyId: string|undefined;
-  datePlanted: Date|undefined;
+  varietyId: string | undefined;
+  datePlanted: Date | undefined;
   numPlants: number;
 
-  constructor(name: string, geojson: Feature, area: number,
-              center: Coordinate) {
+  constructor(
+    name: string,
+    geojson: Feature,
+    area: number,
+    center: Coordinate
+  ) {
     this.name = name;
     this.geojson = geojson;
     this.area = area;
@@ -51,8 +55,8 @@ export class Field {
     return (await db.fields.toArray()) || [];
   }
 
-  static get(id: string): Promise<Field|undefined> {
-    return db.fields.get({id});
+  static get(id: string): Promise<Field | undefined> {
+    return db.fields.get({ id });
   }
 }
 

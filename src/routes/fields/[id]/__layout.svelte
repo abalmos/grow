@@ -1,14 +1,13 @@
 <script lang="ts">
-	// import BackArrow from '$lib/icons/BackArrow.svelte';
-	// import NewIcon from '$lib/icons/NewIcon.svelte';
+  // import BackArrow from '$lib/icons/BackArrow.svelte';
+  // import NewIcon from '$lib/icons/NewIcon.svelte';
   // import Modal from '$lib/components/Modal.svelte';
 
+  // import { goto } from '$app/navigation';
 
-	// import { goto } from '$app/navigation';
-
-	// function handleBack() {
-	// 	goto('/fields');
-	// }
+  // function handleBack() {
+  // 	goto('/fields');
+  // }
 
   // let showEditModal: boolean = false;
   // const toggleEditModal: () => void = () => {
@@ -60,6 +59,5 @@
     </form>
   </Modal>
 {/if} -->
-
 
 <slot />

@@ -59,7 +59,7 @@
   }
 
   h1 {
-    @apply font-display text-xl tracking-wide pt-6; 
+    @apply font-display text-xl tracking-wide pt-6;
   }
 }
 
