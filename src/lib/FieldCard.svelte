@@ -6,7 +6,7 @@
   import type { Field } from '$lib/db';
 
   import { cornGDD } from '$lib/utils/gdd';
-  import { weatherStore } from '$lib/stores/weather';
+  import { weatherStore } from '$stores/weather';
 
   export let field: Field;
 

@@ -16,7 +16,11 @@
     "checkJs": true,
     "paths": {
       "$lib": ["src/lib"],
-      "$lib/*": ["src/lib/*"]
+      "$lib/*": ["src/lib/*"],
+      "$workers": ["src/workers"],
+      "$workers/*": ["src/workers/*"],
+      "$stores": ["src/stores"],
+      "$stores/*": ["src/stores/*"]
     },
     "plugins": [
       {

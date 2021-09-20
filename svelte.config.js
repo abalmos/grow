@@ -1,5 +1,6 @@
 import preprocess from 'svelte-preprocess';
 import WindiCSS from 'vite-plugin-windicss/dist/index.mjs';
+import { resolve } from "path";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -13,7 +14,13 @@ const config = {
     ssr: false,
 
     vite: {
-      plugins: [WindiCSS()]
+      plugins: [WindiCSS()],
+      resolve: {
+        alias: {
+          $workers: resolve('./src/workers'),
+          $stores: resolve('./src/stores')
+        }
+      }
     }
   }
 };
