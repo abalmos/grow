@@ -1,6 +1,6 @@
 import preprocess from 'svelte-preprocess';
 import WindiCSS from 'vite-plugin-windicss/dist/index.mjs';
-import { resolve } from "path";
+import { resolve } from 'path';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
