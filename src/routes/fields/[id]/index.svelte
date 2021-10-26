@@ -20,7 +20,6 @@
 </script>
 
 <script lang="ts">
-  import Graph from '$lib/components/Graph.svelte';
   import Header from '$lib/components/Header.svelte';
   import FieldCard from '$lib/FieldCard.svelte';
 
@@ -35,8 +34,4 @@
 
 <div class="w-full">
   <FieldCard {field} />
-
-  <div class="mb-16 p-4">
-    <Graph weather={field.weather} />
-  </div>
 </div>

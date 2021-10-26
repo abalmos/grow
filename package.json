@@ -32,6 +32,7 @@
   "type": "module",
   "dependencies": {
     "chart.js": "^3.5.1",
+    "chartjs-plugin-annotation": "^1.0.2",
     "date-fns": "^2.24.0",
     "dexie": "^3.2.0-rc.1",
     "leaflet": "^1.7.1",

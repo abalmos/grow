@@ -4,6 +4,7 @@
   import Leaflet from '$lib/leaflet/Leaflet.svelte';
   import GeoJson from '$lib/leaflet/GeoJson.svelte';
   import type { Field } from '$lib/db';
+  import Graph from '$lib/components/Graph.svelte';
 
   import { cornGDD } from '$lib/utils/gdd';
   import { weatherStore } from '$stores/weather';
@@ -25,10 +26,23 @@
   let gdu = 0;
   $: {
     const w = $weather.get(year);
+
     if (w) {
       gdu = cornGDD(w)
         .slice(plantDoY)
         .reduce((a, b) => a + b, 0);
+    }
+  }
+
+  let gduCumulat: number[] = [];
+  $: {
+    const w = $weather.get(year);
+    if (w) {
+      let gddSum = 0;
+      gduCumulat = cornGDD(w).map((gdd) => {
+        gddSum += gdd;
+        return gddSum;
+      });
     }
   }
 
@@ -41,6 +55,8 @@
         .slice(plantDoY, todayDoY + 1)
         .reduce((a, b) => a + b, 0)
     );
+    console.log($weather.values());
+
     avgGdu = gduAverages.reduce((a, b) => a + b, 0) / gduAverages.length;
   }
 
@@ -119,7 +135,19 @@
         </div>
       </div>
     </div>
-
+    <hr />
+    <div class="mb-16 p-4">
+      {#if gduCumulat.length != 0}
+        <Graph
+          today={150}
+          days={[...Array(gduCumulat.length).keys()]}
+          {gduCumulat}
+          fieldGdu={gdu}
+        />
+      {:else}
+        <p>loading...</p>
+      {/if}
+    </div>
     <!--
 		<div class="flex p-4 border-t border-gray-300 text-gray-700">
 			<div class="flex-1 inline-flex items-center">
