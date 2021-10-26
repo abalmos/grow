@@ -6,4 +6,3 @@ node_modules
 /functions
 target
 yarn-error.log
-package-lock.json
