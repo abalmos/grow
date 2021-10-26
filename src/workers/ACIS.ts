@@ -6,13 +6,13 @@ export type FetchWeather = {
   years: number[];
 };
 
-onmessage = async function (e: MessageEvent<FetchWeather>) {
-  let request = e.data;
+onmessage = async function(e: MessageEvent<FetchWeather>) {
+  const request = e.data;
 
   const today = new Date();
 
   for (const year of request.years) {
-    let thisYear = await Weather.get(request.coord, year);
+    const thisYear = await Weather.get(request.coord, year);
 
     // TODO: Only fetch this year's data IF its after the update time AND we haven't already got it today
     if (thisYear.maxTemp.length && thisYear.year !== today.getFullYear()) {
@@ -22,7 +22,7 @@ onmessage = async function (e: MessageEvent<FetchWeather>) {
       continue;
     }
 
-    let weather = await fetch('http://data.rcc-acis.org/GridData', {
+    const weather = await fetch('https://data.rcc-acis.org/GridData', {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
@@ -57,4 +57,4 @@ onmessage = async function (e: MessageEvent<FetchWeather>) {
   }
 };
 
-export {};
+export { };
