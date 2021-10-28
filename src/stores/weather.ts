@@ -8,11 +8,13 @@ import { ACIS } from '$workers';
 
 import type { Coordinate, Year } from '$lib/db';
 
+export type WeatherMap = Map<Year, Weather>;
+
 export function weatherStore(
   coord: Coordinate,
   years: Array<Year>
-): Readable<Map<Year, Weather>> {
-  return readable<Map<Year, Weather>>(new Map(), (set) => {
+): Readable<WeatherMap> {
+  return readable<WeatherMap>(new Map(), (set) => {
     ACIS.postMessage({ coord, years });
 
     const sub = liveQuery(() => Weather.getAll(coord)).subscribe(set);

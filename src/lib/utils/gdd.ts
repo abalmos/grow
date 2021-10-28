@@ -1,4 +1,4 @@
-import type { Weather } from '$lib/db/Weather';
+import type { Weather, Year } from '$lib/db';
 
 export function cornGDD(weather?: Weather): Array<number> {
   if (!weather) {
@@ -19,4 +19,16 @@ export function cornGDD(weather?: Weather): Array<number> {
 
     return (maxT + minT) / 2.0 - 50;
   });
+}
+
+export type GDU = Array<number>;
+
+export function cornGDU(weatherMap: Map<Year, Weather>): Map<Year, GDU> {
+  const gdu = new Map<Year, GDU>();
+
+  weatherMap.forEach((w, year) => {
+    gdu.set(year, cornGDD(w));
+  })
+
+  return gdu;
 }

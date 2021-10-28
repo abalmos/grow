@@ -3,6 +3,8 @@ import { resolve } from 'path';
 
 import adapter from '@sveltejs/adapter-static';
 
+const production = process.env.NODE_ENV === 'production';
+
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
   preprocess: [
@@ -22,6 +24,12 @@ const config = {
     ssr: false,
 
     vite: {
+      optimizeDeps: {
+        include: ['@carbon/charts']
+      },
+      ssr: {
+        noExternal: [production && '@carbon/charts'].filter(Boolean)
+      },
       resolve: {
         alias: {
           $workers: resolve('./src/workers'),

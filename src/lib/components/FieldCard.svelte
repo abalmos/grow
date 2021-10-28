@@ -1,19 +1,21 @@
 <script lang="ts">
-  import { format, differenceInDays, getDayOfYear } from 'date-fns';
-  import { goto } from '$app/navigation';
-  import Leaflet from '$lib/leaflet/Leaflet.svelte';
-  import GeoJson from '$lib/leaflet/GeoJson.svelte';
   import type { Field, Variety } from '$lib/db';
-  import Graph from '$lib/components/Graph.svelte';
 
+  import { goto } from '$app/navigation';
+  import { format, differenceInDays, getDayOfYear } from 'date-fns';
   import { cornGDD } from '$lib/utils/gdd';
   import { weatherStore } from '$stores/weather';
+
+  import Leaflet from '$lib/leaflet/Leaflet.svelte';
+  import GeoJson from '$lib/leaflet/GeoJson.svelte';
   import UpIcon from '$lib/icons/UpIcon.svelte';
   import DownIcon from '$lib/icons/DownIcon.svelte';
   import CornIcon from '$lib/icons/CornIcon.svelte';
 
   export let field: Field;
 
+  // Get field variety
+  // TODO: Got to be a less ugly way?
   let variety: Variety | undefined;
   $: field.getVariety().then((v) => (variety = v));
 
@@ -26,6 +28,7 @@
   // Years to base weather insights from
   const years = Array.from(new Array(6), (_, i) => year - i);
 
+  // Get the last N years of weather
   const weather = weatherStore(field.center, years);
 
   // TODO: Move most of this into a util???
@@ -170,74 +173,6 @@
   </div>
 </div>
 
-<!--
-<div class="w-full">
-  <div class="bg-white border-b rounded-lg overflow-hidden text-left">
-    <!-- TODO: this on:click really just needs to dispatch out of this component
-			so that we can handle the routing in the parent. For example, this breaks
-			the field uploading as is -- >
-    <div
-      class="bg-cover bg-center"
-      on:click={() => goto(`/fields/${encodeURIComponent(field.id)}`)}
-    >
-      <Leaflet
-        class="h-56"
-        zoomControl={false}
-        dragable={false}
-        zoomable={false}
-      >
-        <GeoJson geojson={field.geojson} zoomTo={true} />
-      </Leaflet>
-    </div>
-
-    <div class="p-4">
-      <div class="flex justify-between">
-        <div class="flex-col text-left">
-          <p class="text-3xl text-gray-900">{field.name || ''}</p>
-          <p>{Math.round(field.area)} ac.</p>
-          <p>
-            <!-- TODO: Render the defaults better (right now flashes NaN -> actual number) -- >
-            GDD: {gdu}
-            ({gdu > avgGdu
-              ? `${Math.floor(gdu - avgGdu)} ahead`
-              : `${Math.floor(avgGdu - gdu)} behind`})
-          </p>
-          <p>
-            Rain: {rain.toFixed(1)} in. ({rain > avgRain
-              ? `${(rain - avgRain).toFixed(1)} in. ahead`
-              : `${(avgRain - rain).toFixed(1)} in. behind`})
-          </p>
-        </div>
-        <div class="flex-col text-right">
-          <p>{field.varietyId || ''}</p>
-          <p class="text-lg">
-            {field.datePlanted ? format(field.datePlanted, 'yyyy-MM-dd') : ''}
-          </p>
-          <p class="text-xs">
-            {field.datePlanted
-              ? `${differenceInDays(new Date(), field.datePlanted)} days ago`
-              : ''}
-          </p>
-        </div>
-      </div>
-    </div>
-    <hr />
-    <!--
-    <div class="mb-16 p-4">
-      {#if gduCumulat.length != 0}
-        <Graph
-          today={150}
-          days={[...Array(gduCumulat.length).keys()]}
-          {gduCumulat}
-          fieldGdu={gdu}
-        />
-      {:else}
-        <p>loading...</p>
-      {/if}
-    </div>
-  </div>
-</div>
--->
 <style lang="postcss">
   .stat {
     @apply px-2;
