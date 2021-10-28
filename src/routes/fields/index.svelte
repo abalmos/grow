@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
   import { Field } from '$lib/db';
-  import FieldCard from '$lib/FieldCard.svelte';
+  import FieldCard from '$lib/components/FieldCard.svelte';
 </script>
 
 <!--

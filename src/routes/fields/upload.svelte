@@ -13,7 +13,7 @@
 
 <script lang="ts">
   import { getFeaturesFromShape } from '$lib/geo-utils/geo-utils';
-  import FieldCard from '$lib/FieldCard.svelte';
+  import FieldCard from '$lib/components/FieldCard.svelte';
   import { Field } from '$lib/db';
 
   let fieldNameKey = '';

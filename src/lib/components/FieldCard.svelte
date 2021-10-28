@@ -8,9 +8,9 @@
 
   import { cornGDD } from '$lib/utils/gdd';
   import { weatherStore } from '$stores/weather';
-  import UpIcon from './icons/UpIcon.svelte';
-  import DownIcon from './icons/DownIcon.svelte';
-  import CornIcon from './icons/CornIcon.svelte';
+  import UpIcon from '$lib/icons/UpIcon.svelte';
+  import DownIcon from '$lib/icons/DownIcon.svelte';
+  import CornIcon from '$lib/icons/CornIcon.svelte';
 
   export let field: Field;
 
@@ -105,17 +105,13 @@
     <div class="flex">
       <div class="flex-1">
         <h1 class="card-title text-2xl pb-0 mb-0">{field.name || ''}</h1>
-        <div class="text-xs text-primary">
+        <div class="flex flex-row text-xs text-primary items-center">
+          <CornIcon class="w-5 h-5 fill-current" />
           {Math.round(field.area)} ac.
         </div>
       </div>
-      <div class="flex-1 flex flex-col text-white">
-        <div
-          class="rounded-full bg-info flex-col self-center align-center w-16 flex items-center py-1"
-        >
-          <CornIcon class="w-5 h-5 fill-current" />
-          <div>R2</div>
-        </div>
+      <div class="flex-1 text-center font-bold">
+        <div class="badge badge-primary badge-lg font-bold h-8">R2</div>
       </div>
       <div class="text-right flex-1 text-">
         {variety?.product}
@@ -242,3 +238,8 @@
   </div>
 </div>
 -->
+<style lang="postcss">
+  .stat {
+    @apply px-2;
+  }
+</style>

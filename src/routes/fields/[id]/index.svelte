@@ -21,7 +21,7 @@
 
 <script lang="ts">
   import Header from '$lib/components/Header.svelte';
-  import FieldCard from '$lib/FieldCard.svelte';
+  import FieldCard from '$lib/components/FieldCard.svelte';
 
   export let field: Field;
 
