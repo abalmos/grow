@@ -7,9 +7,7 @@
 </script>
 
 <div class="grid grid-cols-1">
-  <div>
-    <slot />
-  </div>
+  <slot />
 
   <nav class="w-full fixed bottom-0 z-[500] border-t-2">
     <ul class="menu compact w-full justify-around bg-base-100 horizontal">

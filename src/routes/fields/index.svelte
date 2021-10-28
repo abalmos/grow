@@ -13,6 +13,40 @@
 {#await Field.getAll()}
   <!-- Fetching from IndexedDB -->
 {:then fields}
+  <div class="navbar bg-base-300 mb-2">
+    <div class="flex-1 px-2">
+      <span class="text-lg font-bold">Fields</span>
+    </div>
+    <div class="flex justify-end flex-1 px-2">
+      <div class="flex items-stretch">
+        <div class="form-control">
+          <input
+            type="text"
+            placeholder="Search"
+            class="input input-ghost input-bordered"
+          />
+        </div>
+      </div>
+      <div class="dropdown dropdown-end">
+        <div tabindex="0" class="btn btn-ghost rounded-btn">Sort</div>
+        <ul
+          tabindex="0"
+          class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52 !z-[500]"
+        >
+          <li>
+            <a>Name</a>
+          </li>
+          <li>
+            <a>GDU</a>
+          </li>
+          <li>
+            <a>Rain</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
   <div class="flex flex-col">
     {#each fields as field (field.id)}
       <FieldCard {field} />
