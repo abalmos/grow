@@ -4,10 +4,9 @@
   import GeoJson from '$lib/leaflet/GeoJson.svelte';
 </script>
 
-<main class="w-full h-full">
+<main class="w-full">
   {#await Field.getAll()}
-    <!-- This is a crappy screen. The data is local, this will _always_ just flash
-		quickly -->
+    <!-- This is a crappy screen. The data is local, this will _always_ just flash quickly -->
     <p>Loading ...</p>
   {:then fields}
     <Leaflet class="h-screen">

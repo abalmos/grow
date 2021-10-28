@@ -5,6 +5,7 @@ import { db } from './db';
 import type { Feature } from 'geojson';
 
 import type { Coordinate } from '.';
+import { Variety } from './Variety';
 
 export class Field {
   id = `f_${nanoid()}`;
@@ -57,6 +58,11 @@ export class Field {
 
   static get(id: string): Promise<Field | undefined> {
     return db.fields.get({ id });
+  }
+
+  async getVariety(): Promise<Variety | undefined> {
+    console.log(this.varietyId);
+    return this.varietyId ? Variety.get(this.varietyId) : undefined;
   }
 }
 

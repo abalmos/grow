@@ -18,8 +18,6 @@
       props: { variety, brands }
     };
   };
-
-  // This is a test
 </script>
 
 <script lang="ts">
@@ -27,66 +25,102 @@
   export let brands: Array<string>;
 </script>
 
-<div class="max-w-md mx-4">
-  <div class="grid grid-cols-1 gap-3">
-    <!-- Brand -->
-    <label>
-      <span><span class="text-purdue-metallic">*</span> Brand</span>
+<div class="flex flex-col gap-2 px-2">
+  <!-- Seed type -->
+  <p>Seed type</p>
+  <div class="btn-group">
+    <button
+      class="btn"
+      class:btn-active={variety.type === 'corn'}
+      on:click={() => (variety.type = 'corn')}>Corn</button
+    >
+    <button
+      class="btn"
+      class:btn-active={variety.type === 'wheat'}
+      on:click={() => (variety.type = 'wheat')}>Wheat</button
+    >
+  </div>
+
+  <!-- Brand -->
+  <div class="form-control">
+    <label class="label" for="brand">
+      <span class="label-text">Brand</span>
+    </label>
+    <input
+      id="brand"
+      type="text"
+      bind:value={variety.brand}
+      list="brands"
+      required
+      aria-required
+      class="input input-bordered"
+    />
+    <datalist id="brands">
+      {#each brands || [] as brand}
+        <option>{brand}</option>
+      {/each}
+    </datalist>
+  </div>
+
+  <!-- Product -->
+  <div class="form-control">
+    <label class="label" for="product">
+      <span class="label-text">Product</span>
+    </label>
+    <input
+      id="product"
+      type="text"
+      bind:value={variety.product}
+      required
+      aria-required
+      class="input input-bordered w-full"
+    />
+  </div>
+
+  <!-- GDU to tassel -->
+  <div class="form-control">
+    <label class="label" for="tassel">
+      <span class="label-text">Growth to tassel</span>
+    </label>
+    <label class="input-group">
       <input
-        type="text"
-        bind:value={variety.brand}
-        list="brands"
-        required
-        aria-required
+        id="tassel"
+        type="number"
+        bind:value={variety.gduToTassel}
+        class="input input-bordered w-full"
       />
-
-      <datalist id="brands">
-        {#each brands || [] as brand}
-          <option>{brand}</option>
-        {/each}
-      </datalist>
-    </label>
-
-    <!-- Product -->
-    <label>
-      <span><span class="text-purdue-metallic">*</span> Product</span>
-      <input type="text" bind:value={variety.product} />
-    </label>
-
-    <!-- Seed type -->
-    <label>
-      <span>Seed type</span>
-      <select bind:value={variety.type}>
-        <option>Corn</option>
-      </select>
-    </label>
-
-    <!-- GDU to tassel -->
-    <label>
-      <span>GDU to tassel</span>
-      <input type="number" bind:value={variety.gduToTassel} />
-    </label>
-
-    <!-- GDU to black -->
-    <label>
-      <span>GDU to black</span>
-      <input type="number" bind:value={variety.gduToBlack} />
-    </label>
-
-    <label>
-      <button
-        type="button"
-        on:click={() => {
-          variety.save();
-          goto('/varieties');
-        }}
-      >
-        {#if variety.id}
-          Update
-        {:else}
-          Create
-        {/if}
-      </button>
+      <span class="label-text">GDU</span>
     </label>
   </div>
+
+  <!-- GDU to black -->
+  <div class="form-control">
+    <label class="label" for="black">
+      <span class="label-text">Growth to black layer</span>
+    </label>
+    <label class="input-group">
+      <input
+        id="black"
+        type="number"
+        bind:value={variety.gduToBlack}
+        class="input input-bordered w-full"
+      />
+      <span class="label-text">GDU</span>
+    </label>
+  </div>
+
+  <button
+    class="btn btn-primary"
+    on:click={() => {
+      // TODO: Catch and deal with errors!
+      variety.save();
+      goto('/varieties');
+    }}
+  >
+    {#if variety.id}
+      Update
+    {:else}
+      Create
+    {/if}
+  </button>
 </div>

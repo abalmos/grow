@@ -17,31 +17,33 @@
       return goto('/fields', { replaceState: true });
     }
 
+    const variety = (await field.getVariety()) || Variety.default();
+
     // I will use the rest of each product's data to display it in a better way for the select
     // a way that shows the gdu values and brand in some kind of custom Select component
     let varieties: Variety[] = await Variety.getAllProducts();
 
     return {
-      props: { varieties, field }
+      props: { varieties, field, variety }
     };
   };
 </script>
 
 <script lang="ts">
   export let field: Field;
+  export let variety: Variety;
 
   let plantDate = format(field.datePlanted || 0, 'yyyy-MM-dd');
-  let varietyId = field.varietyId;
 
   // export let varieties: Variety;
 
-  function updateVarietyField(variety: Variety) {
-    varietyId = variety.product;
+  function updateVarietyField(newVariety: Variety) {
+    variety = newVariety;
   }
 
   async function handleEditFormSubmit() {
     field.datePlanted = new Date(plantDate);
-    field.varietyId = varietyId;
+    field.varietyId = variety.id;
 
     await field.save();
 
@@ -63,7 +65,7 @@
 
     <label class="w-full">
       <span><span class="text-purdue-metallic">*</span>Selected Variety</span>
-      <input id="variety" type="text" bind:value={varietyId} disabled />
+      <input id="variety" type="text" bind:value={variety.product} disabled />
     </label>
 
     <div class="w-full h-1/2 mt-3">

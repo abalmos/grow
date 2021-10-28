@@ -32,6 +32,4 @@
 
 <Header handleButtonClick={handleOpenEdit} backPath="/fields" />
 
-<div class="w-full">
-  <FieldCard {field} />
-</div>
+<FieldCard {field} />

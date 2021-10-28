@@ -8,14 +8,14 @@ import { db } from './db';
 
 export class Variety {
   id = `v_${nanoid()}`;
-  type: 'Corn';
+  type: 'corn' | 'wheat';
   brand: string;
   product: string;
   gduToBlack?: number;
   gduToTassel?: number;
 
   constructor(
-    type: 'Corn',
+    type: 'corn',
     brand: string,
     product: string,
     gduToBlack?: number,
@@ -48,7 +48,7 @@ export class Variety {
   }
 
   static default(): Variety {
-    return new Variety('Corn', '', '');
+    return new Variety('corn', '', '');
   }
 
   static get(id: string): Promise<Variety | undefined> {
@@ -84,27 +84,27 @@ type AV = Variety[];
 
 // Expose Dexie liveQuery to Sevlte (where a default value is needed)
 export function varietyStore(name: string) {
-	const { subscribe, set } = writable<AV>([]);
+  const { subscribe, set } = writable<AV>([]);
 
-	let sub = liveQuery(() =>
-		db.varieties.where('name').startsWithIgnoreCase(name).toArray()
-	).subscribe(set);
+  let sub = liveQuery(() =>
+    db.varieties.where('name').startsWithIgnoreCase(name).toArray()
+  ).subscribe(set);
 
-	return {
-		subscribe: (run: (value: AV) => void, invalidate?: (value?: AV) => void) => {
-			const unsubscribe = subscribe(run, invalidate);
+  return {
+    subscribe: (run: (value: AV) => void, invalidate?: (value?: AV) => void) => {
+      const unsubscribe = subscribe(run, invalidate);
 
-			return () => {
-				sub.unsubscribe();
-				unsubscribe();
-			};
-		},
-		filterByName: (name: string) => {
-			sub.unsubscribe();
-			sub = liveQuery(() =>
-				db.varieties.where('name').startsWithIgnoreCase(name).toArray()
-			).subscribe(set);
-		}
-	};
+      return () => {
+        sub.unsubscribe();
+        unsubscribe();
+      };
+    },
+    filterByName: (name: string) => {
+      sub.unsubscribe();
+      sub = liveQuery(() =>
+        db.varieties.where('name').startsWithIgnoreCase(name).toArray()
+      ).subscribe(set);
+    }
+  };
 }
 */

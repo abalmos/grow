@@ -15,7 +15,7 @@ export function weatherStore(
   return readable<Map<Year, Weather>>(new Map(), (set) => {
     ACIS.postMessage({ coord, years });
 
-    let sub = liveQuery(() => Weather.getAll(coord)).subscribe(set);
+    const sub = liveQuery(() => Weather.getAll(coord)).subscribe(set);
 
     return () => {
       sub.unsubscribe();
