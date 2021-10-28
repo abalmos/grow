@@ -71,9 +71,13 @@
   <LineChart
     {data}
     options={{
-      title: 'Line (time series)',
+      title: 'GDU Plots',
       data: {
         loading: false
+      },
+      points: {
+        radius: 0,
+        enabled: false
       },
       axes: {
         bottom: {
