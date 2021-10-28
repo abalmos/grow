@@ -2,7 +2,11 @@ const config = {
   content: ['./src/**/*.{html,js,svelte,ts}'],
 
   theme: {
-    extend: {}
+    extend: {
+      gridTemplateRows: {
+        'layout': '2.5rem 1fr 2.5rem'
+      }
+    }
   },
 
   plugins: [

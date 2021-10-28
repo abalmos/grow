@@ -1,5 +1,8 @@
 <script lang="ts">
   export let active = false;
+
+  let clazz = '';
+  export { clazz as class };
 </script>
 
 <svg
@@ -7,6 +10,7 @@
   xml:space="preserve"
   preserveAspectRatio="xMidYMin"
   class:active
+  class={clazz}
 >
   <g>
     <g>
@@ -60,7 +64,7 @@
 
 <style lang="postcss">
   svg {
-    @apply inline-block mb-1 w-6 h-6;
+    @apply inline-block fill-current;
   }
 
   svg * {
