@@ -1,7 +1,6 @@
 <script context="module" lang="ts">
   // TODO: Is this the right way to init this?
   import init from '$lib/geo-utils/geo-utils';
-  // import CheckmarkIcon from '$lib/icons/CheckmarkIcon.svelte';
   import { goto } from '$app/navigation';
 
   export async function load() {
@@ -13,7 +12,6 @@
 
 <script lang="ts">
   import { getFeaturesFromShape } from '$lib/geo-utils/geo-utils';
-  import FieldCard from '$lib/components/FieldCard.svelte';
   import { Field } from '$lib/db';
   import Leaflet from '$lib/leaflet/Leaflet.svelte';
   import GeoJson from '$lib/leaflet/GeoJson.svelte';
@@ -65,33 +63,32 @@
   }
 </script>
 
-<div class="m-2">
-  {#if fields.length === 0}
-    <label>
-      <span>Upload Shapefile:</span>
-      <input type="file" on:change={handleShapefile} />
-    </label>
-  {:else}
-    <h1>One more step</h1>
-    <p>I need a little help. Can you tell me which is the field name?</p>
-    <span>Field name</span>
-    <select
-      class="select selected-bordered select-error w-full max-w-xs"
-      bind:value={fieldNameKey}
-    >
-      <option selected disabled>Select field name</option>
-      {#each Object.keys(fields[0]?.field.geojson.properties || {}) as key}
-        <option>{key}</option>
-      {/each}
-    </select>
+{#if fields.length === 0}
+  <label>
+    <span>Upload Shapefile:</span>
+    <input type="file" on:change={handleShapefile} />
+  </label>
+{:else}
+  <h2>One more step</h2>
+  <p>Can you tell me which column is the field name?</p>
+  <select
+    class="select selected-bordered select-error w-full max-w-xs"
+    bind:value={fieldNameKey}
+  >
+    <option selected disabled>Select field name</option>
+    {#each Object.keys(fields[0]?.field.geojson.properties || {}) as key}
+      <option>{key}</option>
+    {/each}
+  </select>
 
-    <h1>Which fields would you like to import?</h1>
+  <h4>Which fields would you like to import?</h4>
 
+  {#if fieldNameKey}
     <div class="overflow-x-auto">
       <table class="table table-fixed table-zebra w-full">
         <thead>
           <tr>
-            <th class="w-16" />
+            <th class="w-10" />
             <th class="w-24 text-center">Field</th>
             <th class="w-auto">Name</th>
           </tr>
@@ -106,7 +103,7 @@
                 <label>
                   <input
                     type="checkbox"
-                    class="checkbox checkbox-lg"
+                    class="checkbox checkbox"
                     checked={field.checked}
                   />
                 </label>
@@ -145,14 +142,14 @@
       </table>
     </div>
 
-    <div class="relative w-full h-32">
-      <div class="absolute inset-x-16 bottom-0">
-        <label class="submit ">
-          <button type="submit" on:click={handleSubmit}>
-            Import {fields.filter((f) => f.checked).length} Fields
-          </button>
-        </label>
-      </div>
+    <div class="sticky bottom-16 z-50">
+      <button
+        type="submit"
+        class="btn btn-primary w-full"
+        on:click={handleSubmit}
+      >
+        Import {fields.filter((f) => f.checked).length} Fields
+      </button>
     </div>
   {/if}
-</div>
+{/if}
