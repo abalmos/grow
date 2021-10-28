@@ -9,7 +9,7 @@
 </script>
 
 <!-- Extra padding to accoutn for the bottom nav bar height -->
-<div class="pb-20 prose">
+<div class="pb-20">
   <slot />
 </div>
 
