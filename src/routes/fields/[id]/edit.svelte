@@ -70,7 +70,7 @@
 
   <div class="form-control">
     <label class="label" for="variety">
-      <span class="label-text">* Variety: {ariety.product}</span>
+      <span class="label-text">* Variety: {variety.product}</span>
     </label>
     <!-- <input -->
     <!--   id="variety" -->
