@@ -20,7 +20,7 @@
   $: field.getVariety().then((v) => (variety = v));
 
   // Parameters of the weather computations
-  const now = new Date();
+  const now = new Date('09/15/2021');
   const year = now.getFullYear();
   const todayDoY = getDayOfYear(now);
   const plantDoY = getDayOfYear(field.datePlanted || now);
@@ -37,7 +37,7 @@
     const w = $weather.get(year);
 
     gdu = cornGDD(w)
-      .slice(plantDoY)
+      .slice(plantDoY, todayDoY + 1)
       .reduce((a, b) => a + b, 0);
   }
 
@@ -62,7 +62,6 @@
         .slice(plantDoY, todayDoY + 1)
         .reduce((a, b) => a + b, 0)
     );
-    console.log($weather.values());
 
     avgGdu = gduAverages.reduce((a, b) => a + b, 0) / gduAverages.length;
   }
@@ -72,7 +71,7 @@
     let thisYear = $weather.get(year);
     if (thisYear) {
       rain = thisYear.precipitation
-        .slice(plantDoY)
+        .slice(plantDoY, todayDoY + 1)
         .filter((a) => a !== -999)
         .reduce((a, b) => a + b, 0);
     }
@@ -99,7 +98,7 @@
     </Leaflet>
   </figure>
   <progress
-    class="progress progress-success rounded-none h-1"
+    class="progress progress-secondary rounded-none"
     value={gdu}
     max={variety?.gduToBlack}
   />
@@ -114,7 +113,8 @@
         </div>
       </div>
       <div class="flex-1 text-center font-bold">
-        <div class="badge badge-primary badge-lg font-bold h-8">R2</div>
+        <!-- TODO: Do an actual stage estimate -->
+        <div class="badge badge-primary badge-lg font-bold h-8">R5</div>
       </div>
       <div class="text-right flex-1 text-">
         {variety?.product}

@@ -28,6 +28,7 @@
   import { weatherStore } from '$stores/weather';
   import { cornGDU, GDU } from '$lib/utils/gdd';
   import { addDays, getDayOfYear } from 'date-fns';
+  import SettingsIcon from '$lib/icons/SettingsIcon.svelte';
 
   export let field: Field;
 
@@ -36,7 +37,8 @@
   }
 
   // Parameters of the weather computations
-  const now = new Date();
+  // const now = new Date();
+  const now = new Date('09/15/2021');
   const year = now.getFullYear();
   const todayDoY = getDayOfYear(now);
   const plantDoY = getDayOfYear(field.datePlanted || now);
@@ -49,9 +51,10 @@
   let data: Array<{ group: string; date: Date; value: number }> = [];
   $: {
     gdu = cornGDU($weather);
-    if (gdu) {
+    let gduYear = gdu.get(year);
+    if (gduYear) {
       let last = 0;
-      data = gdu.get(year)?.map((v, doy) => {
+      data = gduYear.slice(0, todayDoY + 1).map((v, doy) => {
         last += v;
         return {
           group: 'GDU',
@@ -63,7 +66,17 @@
   }
 </script>
 
-<Header handleButtonClick={handleOpenEdit} backPath="/fields" />
+<Header
+  title={`Field: ${field.name}`}
+  handleButtonClick={handleOpenEdit}
+  backPath="/fields"
+>
+  <SettingsIcon
+    slot="right"
+    class="fill-current h-6 w-6"
+    on:click={handleOpenEdit}
+  />
+</Header>
 
 <FieldCard {field} />
 
@@ -104,7 +117,7 @@
         }
       },
       curve: 'curveMonotoneX',
-      height: '400px'
+      height: '300px'
     }}
   />
 </div>

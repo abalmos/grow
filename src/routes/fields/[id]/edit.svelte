@@ -51,27 +51,41 @@
   }
 </script>
 
-<Header backPath={'/fields/' + field.id} showButton={false} />
+<Header title={`Edit: ${field.name}`} backPath={'/fields/' + field.id} />
 
-<form
-  on:submit|preventDefault={handleEditFormSubmit}
-  class="w-5/6 mx-auto h-full flex flex-col justify-between p-8"
->
-  <div class="flex flex-wrap mb-14">
-    <label class="w-full">
-      <span><span class="text-purdue-metallic">*</span> Planted on</span>
-      <input id="date" type="date" bind:value={plantDate} required />
+<div class="flex flex-col gap-2 px-2">
+  <div class="form-control">
+    <label class="label" for="plantDate">
+      <span class="label-text">* Planted on</span>
+      <input
+        id="plantDate"
+        type="date"
+        bind:value={plantDate}
+        required
+        aria-required
+        class="input"
+      />
     </label>
-
-    <label class="w-full">
-      <span><span class="text-purdue-metallic">*</span>Selected Variety</span>
-      <input id="variety" type="text" bind:value={variety.product} disabled />
-    </label>
-
-    <div class="w-full h-1/2 mt-3">
-      <SelectVariety handleOnClick={updateVarietyField} />
-    </div>
-
-    <button class="mt-4" type="submit">Confirm Edit</button>
   </div>
-</form>
+
+  <div class="form-control">
+    <label class="label" for="variety">
+      <span class="label-text">* Variety: {ariety.product}</span>
+    </label>
+    <!-- <input -->
+    <!--   id="variety" -->
+    <!--   type="text" -->
+    <!--   bind:value={variety.product} -->
+    <!--   disabled -->
+    <!--   class="input input-bordered w-full" -->
+    <!-- /> -->
+  </div>
+
+  <div class="">
+    <SelectVariety handleOnClick={updateVarietyField} />
+  </div>
+
+  <button class="btn btn-primary" type="submit" on:click={handleEditFormSubmit}>
+    Confirm Edit
+  </button>
+</div>

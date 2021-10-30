@@ -23,7 +23,7 @@
       <a
         href="/#"
         class="flex-col gap-1 text-base-content"
-        class:active={$page.path.startsWith('/#')}
+        class:active={$page.path === '/'}
       >
         <MapIcon class="h-5" />
         <div class="text-xs">Map</div>

@@ -4,6 +4,7 @@
 
   import PollenIcon from '$lib/icons/PollenIcon.svelte';
   import CornIcon from '$lib/icons/CornIcon.svelte';
+  import SearchIcon from '$lib/icons/SearchIcon.svelte';
 
   export let handleOnClick: (variety: Variety) => void;
 
@@ -26,29 +27,24 @@
   }
 </script>
 
-<div class="w-full h-full">
-  <div class="bg-white py-2 mb-4">
-    <label class="flex items-center rounded bg-gray-100">
-      <div class="px-2">
-        <svg
-          class="fill-current text-gray-500 w-6 h-6"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"
-          />
-        </svg>
-      </div>
-      <input
-        bind:value={search}
-        id="search"
-        type="text"
-        placeholder="Search varieties"
-        class="w-full leading-tight py-2"
-      />
-    </label>
+<div>
+  <div>
+    <div class="form-control">
+      <label class="input-group" for="search">
+        <span>
+          <SearchIcon class="h-6 w-6" />
+        </span>
+        <input
+          bind:value={search}
+          id="search"
+          type="text"
+          placeholder="Search varieties"
+          class="input input-bordered w-full"
+        />
+      </label>
+    </div>
 
+    <!-- TODO: dasiyui-ify it still ... -->
     <div class="text-sm mt-3 px-2 h-60 overflow-y-scroll">
       {#each Array.from(varieties.entries()) as [brand, vs]}
         <h2 class="uppercase text-xs font-extralight tracking-wide pt-6">

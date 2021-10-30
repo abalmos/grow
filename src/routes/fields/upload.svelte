@@ -1,17 +1,6 @@
-<script context="module" lang="ts">
-  // TODO: Is this the right way to init this?
-  import init from '$lib/geo-utils/geo-utils';
-  import { goto } from '$app/navigation';
-
-  export async function load() {
-    await init();
-
-    return {};
-  }
-</script>
-
 <script lang="ts">
-  import { getFeaturesFromShape } from '$lib/geo-utils/geo-utils';
+  import { goto } from '$app/navigation';
+  import { browser } from '$app/env';
   import { Field } from '$lib/db';
   import Leaflet from '$lib/leaflet/Leaflet.svelte';
   import GeoJson from '$lib/leaflet/GeoJson.svelte';
@@ -42,13 +31,22 @@
         return;
       }
 
-      // NOTE: We have to ensure the TS `Field` and the rs return type agree!
-      let shapes = getFeaturesFromShape(new Uint8Array(b)) as Field[];
+      if (browser) {
+        const geoUtils = await import('$lib/geo-utils/geo-utils');
 
-      fields = shapes.map((s) => ({
-        checked: false,
-        field: new Field('', s.geojson, s.area, s.center)
-      }));
+        // Load the WASM binary
+        await geoUtils.default();
+
+        // NOTE: We have to ensure the TS `Field` and the rs return type agree!
+        let shapes = geoUtils.getFeaturesFromShape(
+          new Uint8Array(b)
+        ) as Field[];
+
+        fields = shapes.map((s) => ({
+          checked: false,
+          field: new Field('', s.geojson, s.area, s.center)
+        }));
+      }
     }
   }
 

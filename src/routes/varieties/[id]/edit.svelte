@@ -21,9 +21,13 @@
 </script>
 
 <script lang="ts">
+  import Header from '$lib/components/Header.svelte';
+
   export let variety: Variety;
   export let brands: Array<string>;
 </script>
+
+<Header title={`Edit: ${variety.product}`} backPath="/varieties" />
 
 <div class="flex flex-col gap-2 px-2">
   <!-- Seed type -->

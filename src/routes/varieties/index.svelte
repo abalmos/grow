@@ -4,6 +4,7 @@
 
   import PollenIcon from '$lib/icons/PollenIcon.svelte';
   import CornIcon from '$lib/icons/CornIcon.svelte';
+  import Header from '$lib/components/Header.svelte';
 
   let search = '';
 
@@ -24,9 +25,7 @@
   }
 </script>
 
-<header class="sticky top-0 bg-purdue-gray shadow z-500">
-  <h1 class="p-3 text-white font-semibold">Varieties</h1>
-</header>
+<Header title="Varieties" />
 
 <div class="form-control mx-2">
   <label class="label">
