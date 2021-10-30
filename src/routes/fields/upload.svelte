@@ -4,6 +4,7 @@
   import { Field } from '$lib/db';
   import Leaflet from '$lib/leaflet/Leaflet.svelte';
   import GeoJson from '$lib/leaflet/GeoJson.svelte';
+  import Header from '$lib/components/Header.svelte';
 
   let fieldNameKey = '';
   let fields: Array<{ checked: boolean; field: Field }> = [];
@@ -61,16 +62,24 @@
   }
 </script>
 
+<Header title="Upload field(s)" backPath="/fields" />
+
 {#if fields.length === 0}
-  <label>
-    <span>Upload Shapefile:</span>
-    <input type="file" on:change={handleShapefile} />
-  </label>
+  <div class="form-control">
+    <label class="input-group input-group-vertical input-group-lg">
+      <span>Shapefile</span>
+      <input
+        id="file"
+        type="file"
+        on:change={handleShapefile}
+        class="input input-bordered input-lg input-file"
+      />
+    </label>
+  </div>
 {:else}
-  <h2>One more step</h2>
-  <p>Can you tell me which column is the field name?</p>
+  <p class="text-lg font-bold">Select field name column.</p>
   <select
-    class="select selected-bordered select-error w-full max-w-xs"
+    class="select select-bordered select-primary w-full max-w-xs mb-4"
     bind:value={fieldNameKey}
   >
     <option selected disabled>Select field name</option>
@@ -79,8 +88,7 @@
     {/each}
   </select>
 
-  <h4>Which fields would you like to import?</h4>
-
+  <p class="text-lg font-bold mb-4">Select fields to import.</p>
   {#if fieldNameKey}
     <div class="overflow-x-auto">
       <table class="table table-fixed table-zebra w-full">
