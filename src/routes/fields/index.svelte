@@ -2,6 +2,7 @@
   import { Field } from '$lib/db';
   import FieldCard from '$lib/components/FieldCard.svelte';
   import Header from '$lib/components/Header.svelte';
+
 </script>
 
 <!-- TODO: Remove component ?
@@ -46,7 +47,8 @@
 {:then fields}
   <div class="flex flex-col">
     {#each fields as field (field.id)}
-      <FieldCard {field} />
+    <!--Making the call here-->
+      <FieldCard {field}/>
       <div class="divider w-11/12 place-self-center" />
     {/each}
   </div>

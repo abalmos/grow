@@ -2,6 +2,12 @@
   import { Field } from '$lib/db';
   import Leaflet from '$lib/leaflet/Leaflet.svelte';
   import GeoJson from '$lib/leaflet/GeoJson.svelte';
+  import { goto } from '$app/navigation';
+
+
+const handle_click_event = (field : Field) => {
+  goto(`/fields/${field.id}`)
+}
 </script>
 
 <main class="w-full">
@@ -11,7 +17,7 @@
   {:then fields}
     <Leaflet class="h-screen">
       {#each fields as field (field.id)}
-        <GeoJson geojson={field.geojson} zoomTo={true} />
+        <GeoJson geojson={field.geojson} zoomTo={true} on:click={() => handle_click_event(field)} />
       {/each}
     </Leaflet>
   {/await}
