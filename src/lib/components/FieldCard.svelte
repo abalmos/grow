@@ -53,8 +53,6 @@
     }
   }
 
-
-
   let avgGdu = 0;
   $: {
     // TODO: We are showing GDU acculmation as of the last weather downloaded compared to the average up to today.
@@ -91,15 +89,13 @@
     );
     avgRain = rainAverages.reduce((a, b) => a + b, 0) / rainAverages.length;
   }
-
 </script>
 
 <div class="card rounded-none">
-  <!--Calling goto to reroute-->
-  <figure>
+    <figure on:click={()=>goto(`/fields/${encodeURIComponent(field.id)}`)}>
     <Leaflet class="h-56" zoomControl={false} dragable={false} zoomable={false}>
       <GeoJson geojson={field.geojson} 
-      zoomTo={true} on:click={()=>goto(`/fields/${encodeURIComponent(field.id)}`)}/>
+      zoomTo={true}/>
     </Leaflet>
   </figure>
   <progress
