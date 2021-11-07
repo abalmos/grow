@@ -4,10 +4,9 @@
   import GeoJson from '$lib/leaflet/GeoJson.svelte';
 import { goto } from '$app/navigation';
 
-  function redirect_to_fields(field : Field) {
+  function redirect_to_field(field : Field) {
     goto(`/fields/${field.id}`);
   }
-
 </script>
 
 <main class="w-full">
