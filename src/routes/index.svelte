@@ -16,7 +16,7 @@ import { goto } from '$app/navigation';
   {:then fields}
     <Leaflet class="h-screen">
       {#each fields as field (field.id)}
-        <GeoJson geojson={field.geojson} zoomTo={true} on:click={() => redirect_to_fields(field)}/>
+        <GeoJson geojson={field.geojson} zoomTo={true} on:click={() => redirect_to_field(field)}/>
       {/each}
     </Leaflet>
   {/await}
