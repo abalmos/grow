@@ -1,0 +1,21 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+
+jobs:
+  lint:
+    name: Run lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      # Use our local setup action
+      - uses: ./.github/actions/setup-node-yarn-deps
+
+      - name: Run lint
+        run: yarn build
