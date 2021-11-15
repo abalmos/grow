@@ -33,3 +33,17 @@ jobs:
 
       - name: Run svelte-check
         run: yarn run check
+
+  build:
+    name: Test build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      # Use our local setup action
+      - uses: ./.github/actions/setup-node-yarn-deps
+
+      - name: Run build 
+        run: yarn run build
