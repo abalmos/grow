@@ -1,0 +1,12 @@
+name: Setup rust and wasm-pack
+description: Installs rust through cargo and downloads latest wasm-pack
+runs:
+  using: composite
+  steps:
+    - uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+
+    - uses: jetli/wasm-pack-action@v0.3.0
+      with:
+        version: 'latest'

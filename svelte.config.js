@@ -1,5 +1,6 @@
 import preprocess from 'svelte-preprocess';
 import { resolve } from 'path';
+import { ViteRsw } from 'vite-plugin-rsw';
 
 import adapter from '@sveltejs/adapter-static';
 
@@ -30,6 +31,20 @@ const config = {
       ssr: {
         noExternal: [production && '@carbon/charts'].filter(Boolean)
       },
+      server: {
+        fs: {
+          allow: ['geo-utils']
+        }
+      },
+      plugins: [
+        ViteRsw({
+          profile: production ? 'release' : 'dev',
+          target: 'web',
+          crates: [
+            'geo-utils'
+          ]
+        })
+      ],
       resolve: {
         alias: {
           $workers: resolve('./src/workers'),

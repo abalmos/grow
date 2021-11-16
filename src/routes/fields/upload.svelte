@@ -1,10 +1,12 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import { browser } from '$app/env';
+  // import { browser } from '$app/env';
   import { Field } from '$lib/db';
   import Leaflet from '$lib/leaflet/Leaflet.svelte';
   import GeoJson from '$lib/leaflet/GeoJson.svelte';
   import Header from '$lib/components/Header.svelte';
+  import geoUtilsInit, { getFeaturesFromShape } from 'geo-utils';
+  import geoUtilsWasm from 'geo-utils/geo-utils_bg.wasm?url';
 
   let fieldNameKey = '';
   let fields: Array<{ checked: boolean; field: Field }> = [];
@@ -32,22 +34,14 @@
         return;
       }
 
-      if (browser) {
-        const geoUtils = await import('$lib/geo-utils/geo-utils');
+      // Load the wasm binary
+      await geoUtilsInit(geoUtilsWasm);
+      let shapes = getFeaturesFromShape(new Uint8Array(b)) as Field[];
 
-        // Load the WASM binary
-        await geoUtils.default();
-
-        // NOTE: We have to ensure the TS `Field` and the rs return type agree!
-        let shapes = geoUtils.getFeaturesFromShape(
-          new Uint8Array(b)
-        ) as Field[];
-
-        fields = shapes.map((s) => ({
-          checked: false,
-          field: new Field('', s.geojson, s.area, s.center)
-        }));
-      }
+      fields = shapes.map((s) => ({
+        checked: false,
+        field: new Field('', s.geojson, s.area, s.center)
+      }));
     }
   }
 

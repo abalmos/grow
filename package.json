@@ -1,9 +1,12 @@
 {
-  "name": "~TODO~",
+  "name": "grow",
+  "authors": [
+    "Andrew Balmos <abalmos@purdue.edu>"
+  ],
   "version": "0.0.1",
   "scripts": {
     "dev": "svelte-kit dev",
-    "build": "svelte-kit build",
+    "build": "rsw && node fix-new-urls && svelte-kit build",
     "preview": "svelte-kit preview",
     "check": "svelte-check --tsconfig ./tsconfig.json --threshold warning --diagnostic-sources 'js,svelte'",
     "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch --threshold warning  --diagnostic-sources 'js,svelte'",
@@ -37,7 +40,8 @@
     "tailwindcss": "^3.0.0-alpha.2",
     "tslib": "^2.0.0",
     "typescript": "^4.4.3",
-    "typescript-svelte-plugin": "^0.2.4"
+    "typescript-svelte-plugin": "^0.2.4",
+    "vite-plugin-rsw": "^1.10.0"
   },
   "type": "module",
   "dependencies": {

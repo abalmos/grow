@@ -10,7 +10,7 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 console_error_panic_hook = "0.1.6"
 wee_alloc = { version = "0.4.5", optional = true }
-wasm-bindgen = { version = "0.2.73", features = [ "serde-serialize" ] }
+wasm-bindgen = { version = "0.2.78", features = [ "serde-serialize" ] }
 shapefile = { version = "0.2.2", features = [ "geo-types" ] }
 zip = { version = "0.5.11", default-features = false, features = [ "deflate" ] }
 geo-types = "0.7.1"

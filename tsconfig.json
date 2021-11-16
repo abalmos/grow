@@ -2,8 +2,11 @@
   "compilerOptions": {
     "moduleResolution": "node",
     "module": "es2020",
-    "lib": ["es2020", "DOM"],
-    "target": "es2019",
+    "lib": [
+      "es2020",
+      "DOM"
+    ],
+    "target": "es2020",
     "importsNotUsedAsValues": "error",
     "isolatedModules": true,
     "resolveJsonModule": true,
@@ -15,12 +18,24 @@
     "allowJs": true,
     "checkJs": true,
     "paths": {
-      "$lib": ["src/lib"],
-      "$lib/*": ["src/lib/*"],
-      "$workers": ["src/workers"],
-      "$workers/*": ["src/workers/*"],
-      "$stores": ["src/stores"],
-      "$stores/*": ["src/stores/*"]
+      "$lib": [
+        "src/lib"
+      ],
+      "$lib/*": [
+        "src/lib/*"
+      ],
+      "$workers": [
+        "src/workers"
+      ],
+      "$workers/*": [
+        "src/workers/*"
+      ],
+      "$stores": [
+        "src/stores"
+      ],
+      "$stores/*": [
+        "src/stores/*"
+      ]
     },
     "plugins": [
       {
@@ -35,6 +50,13 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
-  "include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ts", "src/**/*.svelte"],
-  "exclude": ["src/lib/geo-utils/**/*.js"]
+  "include": [
+    "src/**/*.d.ts",
+    "src/**/*.js",
+    "src/**/*.ts",
+    "src/**/*.svelte"
+  ],
+  "exclude": [
+    "src/lib/geo-utils/**/*.js"
+  ]
 }
