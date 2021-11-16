@@ -1,5 +1,3 @@
 {
-  "crates": [
-    "geo-utils"
-  ]
+  "crates": ["geo-utils"]
 }

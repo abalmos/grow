@@ -40,9 +40,7 @@ const config = {
         ViteRsw({
           profile: production ? 'release' : 'dev',
           target: 'web',
-          crates: [
-            'geo-utils'
-          ]
+          crates: ['geo-utils']
         })
       ],
       resolve: {

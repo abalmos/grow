@@ -1639,8 +1639,8 @@
   "resolved" "https://registry.npmjs.org/functional-red-black-tree/-/functional-red-black-tree-1.0.1.tgz"
   "version" "1.0.1"
 
-"geo-utils@file:geo-utils/pkg":
-  "resolved" "file:geo-utils/pkg"
+"geo-utils@file:.rsw/crates/geo-utils/pkg":
+  "resolved" "file:.rsw/crates/geo-utils/pkg"
   "version" "0.1.0"
 
 "get-caller-file@^2.0.5":
