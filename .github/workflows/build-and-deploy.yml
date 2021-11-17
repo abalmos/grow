@@ -31,7 +31,7 @@ jobs:
         uses: crazy-max/ghaction-github-pages@v2
         with:
           build_dir: build
-          fqdn: grow.oatscenter.com
+          fqdn: grow.oatscenter.org
           jekyll: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
