@@ -1,6 +1,5 @@
 import preprocess from 'svelte-preprocess';
 import { resolve } from 'path';
-import { ViteRsw } from 'vite-plugin-rsw';
 
 import adapter from '@sveltejs/adapter-static';
 
@@ -25,6 +24,11 @@ const config = {
     ssr: false,
 
     vite: {
+      build: {
+        rollupOptions: {
+          external: ['geo-utils', 'geo-utils/geo-utils_bg.wasm?url']
+        }
+      },
       optimizeDeps: {
         include: ['@carbon/charts']
       },
@@ -36,13 +40,6 @@ const config = {
           allow: ['geo-utils']
         }
       },
-      plugins: [
-        ViteRsw({
-          profile: production ? 'release' : 'dev',
-          target: 'web',
-          crates: ['geo-utils']
-        })
-      ],
       resolve: {
         alias: {
           $workers: resolve('./src/workers'),

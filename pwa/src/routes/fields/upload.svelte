@@ -5,8 +5,8 @@
   import Leaflet from '$lib/leaflet/Leaflet.svelte';
   import GeoJson from '$lib/leaflet/GeoJson.svelte';
   import Header from '$lib/components/Header.svelte';
-  import geoUtilsInit, { getFeaturesFromShape } from 'geo-utils';
-  import geoUtilsWasm from 'geo-utils/geo-utils_bg.wasm?url';
+  import geoUtilsInit, { getFeaturesFromShape } from '@grow/geo-utils';
+  import geoUtilsWasm from '@grow/geo-utils/pkg/geo-utils_bg.wasm?url';
 
   let fieldNameKey = '';
   let fields: Array<{ checked: boolean; field: Field }> = [];

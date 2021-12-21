@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 
+echo "Add wasm32-unknown-unkown target"
 rustup target add wasm32-unknown-unknown
-cargo install --version 0.2.73 -- wasm-bindgen-cli
-cargo build --lib --target wasm32-unknown-unknown
-wasm-bindgen ./target/wasm32-unknown-unknown/debug/geo_utils.wasm --out-dir ../src/lib/geo-utils --out-name "geo-utils" --target web
-wasm-opt ../src/lib/geo-utils/geo-utils_bg.wasm -O -g --output ../src/lib/geo-utils/geo-utils_bg.wasm
+echo "cargo install wasm-bindgen-cli"
+cargo install --version 0.2.78 -- wasm-bindgen-cli
+echo "cargo build"
+cargo build --lib --target wasm32-unknown-unknown --release
+echo "wasm-bingen"
+wasm-bindgen ./target/wasm32-unknown-unknown/release/geo_utils.wasm --out-dir "pkg" --out-name "geo-utils" --target web
+echo "wasm-opt"
+wasm-opt ./pkg/geo-utils_bg.wasm -O -g --output ./pkg/geo-utils_bg.wasm
+echo "Fix new URL() bug"
+node ./fix-new-urls.js

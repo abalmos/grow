@@ -16,7 +16,7 @@ jobs:
 
       # Use our local setup action
       - uses: ./.github/actions/setup-node-yarn-deps
-      - uses: ./.github/actions/setup-rust-wasm
+      # - uses: ./.github/actions/setup-rust-wasm
 
       - name: Run build
         run: yarn build
@@ -26,7 +26,7 @@ jobs:
         with:
           pages_threshold: major_outage
 
-      - name: De deploy to GH pages
+      - name: Do deploy to GH pages
         if: success()
         uses: crazy-max/ghaction-github-pages@v2
         with:
