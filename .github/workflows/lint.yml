@@ -19,7 +19,7 @@ jobs:
       - uses: ./.github/actions/setup-node-yarn-deps
 
       - name: Run lint
-        run: yarn run lint
+        run: cd pwa && yarn run lint
 
   check:
     name: Run check
@@ -33,7 +33,7 @@ jobs:
       - uses: ./.github/actions/setup-node-yarn-deps
 
       - name: Run svelte-check
-        run: yarn run check
+        run: cd pwa && yarn run check
 
   build:
     name: Test build
@@ -45,7 +45,7 @@ jobs:
 
       # Use our local setup action
       - uses: ./.github/actions/setup-node-yarn-deps
-      - uses: ./.github/actions/setup-rust-wasm
+      # - uses: ./.github/actions/setup-rust-wasm
 
       - name: Run build
-        run: yarn run build
+        run: cd pwa && yarn run build

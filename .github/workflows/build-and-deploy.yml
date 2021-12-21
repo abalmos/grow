@@ -19,7 +19,7 @@ jobs:
       # - uses: ./.github/actions/setup-rust-wasm
 
       - name: Run build
-        run: yarn build
+        run: cd pwa && yarn build
 
       - name: Check GitHub Pages status
         uses: crazy-max/ghaction-github-status@v2
@@ -30,7 +30,7 @@ jobs:
         if: success()
         uses: crazy-max/ghaction-github-pages@v2
         with:
-          build_dir: build
+          build_dir: pwa/build
           fqdn: grow.oatscenter.org
           jekyll: false
         env:

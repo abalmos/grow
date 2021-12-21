@@ -30,4 +30,5 @@ runs:
 
     - name: Install dependencies
       shell: bash
-      run: yarn install --frozen-lockfile --network-concurrency 1
+      # TODO: Factor out the `pwa` change directory
+      run: cd pwa && yarn install --frozen-lockfile --network-concurrency 1
