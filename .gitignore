@@ -6,3 +6,6 @@ build
 /functions
 target
 yarn-error.log
+.env
+.env.*
+
