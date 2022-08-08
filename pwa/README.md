@@ -1,3 +1,5 @@
+# GROW: Your Field Knowledge
+
 ## Developing
 
 Install the dependencies using yarn (`yarn install`)

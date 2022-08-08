@@ -1,26 +1,22 @@
 import Dexie from 'dexie';
+import type { Table } from 'dexie';
 
 import type { Field, Variety, Weather } from '.';
 
 export class GrowDB extends Dexie {
-  fields: Dexie.Table<Field, string>;
-  varieties: Dexie.Table<Variety, string>;
-  weather: Dexie.Table<Weather, [number, number]>;
+	fields!: Table<Field, string>;
+	varieties!: Table<Variety, string>;
+	weather!: Table<Weather, [number, number]>;
 
-  constructor() {
-    super('GrowDB'); //, idb);
+	constructor() {
+		super('GrowDB'); //, idb);
 
-    this.version(5).stores({
-      varieties: '&id, brand, product',
-      fields: '&id',
-      weather: '&[coord+year]'
-    });
-
-    // Give TS a hint
-    this.varieties = this.table('varieties');
-    this.fields = this.table('fields');
-    this.weather = this.table('weather');
-  }
+		this.version(5).stores({
+			varieties: '&id, brand, product',
+			fields: '&id',
+			weather: '&[coord+year]'
+		});
+	}
 }
 
 export const db = new GrowDB();
